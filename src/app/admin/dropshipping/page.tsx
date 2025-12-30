@@ -54,56 +54,65 @@ export default function DropshippingPage() {
 
     return (
         <div className="space-y-8">
-            <div className="flex justify-between items-center">
-                <h1 className="text-3xl font-bold text-gray-900">CJ Dropshipping Sourcing</h1>
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div>
+                    <h1 className="text-3xl font-black text-gray-900 dark:text-white tracking-tight">CJ Sourcing</h1>
+                    <p className="mt-1 text-gray-500 font-medium">Find and import winning products directly from CJ Dropshipping.</p>
+                </div>
             </div>
 
-            <form onSubmit={handleSearch} className="max-w-2xl flex gap-4">
-                <div className="relative flex-1">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
-                    <input
-                        type="text"
-                        value={keyword}
-                        onChange={(e) => setKeyword(e.target.value)}
-                        placeholder="Search products on CJ Dropshipping..."
-                        className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                    />
+            <div className="bg-white dark:bg-gray-800 p-6 sm:p-10 rounded-[2.5rem] border border-gray-100 dark:border-gray-700 shadow-xl">
+                <form onSubmit={handleSearch} className="max-w-3xl flex flex-col sm:flex-row gap-4">
+                    <div className="relative flex-1 group">
+                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 group-focus-within:text-indigo-500 transition-colors" />
+                        <input
+                            type="text"
+                            value={keyword}
+                            onChange={(e) => setKeyword(e.target.value)}
+                            placeholder="Search products on CJ Dropshipping..."
+                            className="w-full pl-12 pr-4 py-4 rounded-2xl bg-gray-50 dark:bg-gray-900 border-none focus:ring-2 focus:ring-indigo-500 font-bold transition-all"
+                        />
+                    </div>
+                    <button
+                        type="submit"
+                        disabled={loading}
+                        className="bg-indigo-600 shadow-lg shadow-indigo-600/20 text-white px-8 py-4 rounded-2xl font-black hover:bg-indigo-700 disabled:opacity-50 flex items-center justify-center transition-all active:scale-[0.98]"
+                    >
+                        {loading ? <Loader2 className="h-5 w-5 animate-spin mr-2" /> : "Find Products"}
+                    </button>
+                </form>
+            </div>
+
+            {error && (
+                <div className="p-4 bg-rose-50 dark:bg-rose-900/20 text-rose-600 dark:text-rose-400 rounded-2xl border border-rose-100 dark:border-rose-900/30 text-sm font-bold">
+                    {error}
                 </div>
-                <button
-                    type="submit"
-                    disabled={loading}
-                    className="bg-indigo-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-indigo-700 disabled:opacity-50 flex items-center"
-                >
-                    {loading ? <Loader2 className="h-5 w-5 animate-spin mr-2" /> : "Search"}
-                </button>
-            </form>
+            )}
 
-            {error && <p className="text-red-500">{error}</p>}
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
                 {products.map((product) => (
-                    <div key={product.pid} className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col">
-                        <div className="relative aspect-square">
+                    <div key={product.pid} className="group bg-white dark:bg-gray-800 rounded-[2.5rem] shadow-xl border border-gray-100 dark:border-gray-700 overflow-hidden flex flex-col transition-all duration-500 hover:border-indigo-500/30">
+                        <div className="relative aspect-square overflow-hidden">
                             <img
                                 src={product.productImage}
                                 alt={product.productNameEn}
-                                className="w-full h-full object-cover"
+                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                             />
-                            <div className="absolute top-2 right-2 bg-white/90 backdrop-blur px-2 py-1 rounded text-xs font-bold text-gray-900">
+                            <div className="absolute top-4 right-4 bg-white/95 dark:bg-gray-900/95 backdrop-blur shadow-xl px-3 py-1.5 rounded-xl text-sm font-black text-gray-900 dark:text-white">
                                 ${product.sellPrice.toFixed(2)}
                             </div>
                         </div>
-                        <div className="p-4 flex-1 flex flex-col">
-                            <h3 className="font-semibold text-gray-900 text-sm mb-2 line-clamp-2">{product.productNameEn}</h3>
-                            <div className="flex items-center text-xs text-gray-500 mb-4">
-                                <PackageCheck className="h-3 w-3 mr-1" />
-                                Category: {product.categoryName}
+                        <div className="p-6 flex-1 flex flex-col">
+                            <h3 className="font-black text-gray-900 dark:text-white text-sm mb-3 line-clamp-2 leading-tight group-hover:text-indigo-600 transition-colors">{product.productNameEn}</h3>
+                            <div className="flex items-center text-[10px] font-black uppercase tracking-widest text-slate-400 mb-6">
+                                <PackageCheck className="h-3 w-3 mr-1.5 text-indigo-500" />
+                                {product.categoryName}
                             </div>
-                            <div className="mt-auto flex items-center gap-2">
+                            <div className="mt-auto flex items-center gap-3">
                                 <button
                                     onClick={() => handleImport(product.pid)}
                                     disabled={importing === product.pid}
-                                    className="flex-1 bg-indigo-50 text-indigo-700 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-indigo-100 disabled:opacity-50 flex items-center justify-center"
+                                    className="flex-1 bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 px-4 py-3 rounded-2xl text-xs font-black uppercase tracking-wider hover:bg-indigo-100 dark:hover:bg-indigo-900/40 disabled:opacity-50 flex items-center justify-center transition-all active:scale-[0.95]"
                                 >
                                     {importing === product.pid ? (
                                         <Loader2 className="h-4 w-4 animate-spin mr-2" />
@@ -116,7 +125,7 @@ export default function DropshippingPage() {
                                     href={`https://cjdropshipping.com/product-detail.html?productID=${product.pid}`}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="p-2 text-gray-400 hover:text-gray-600"
+                                    className="p-3 text-gray-400 hover:text-indigo-600 bg-slate-50 dark:bg-gray-900 rounded-2xl transition-all hover:scale-110"
                                     title="View on CJ"
                                 >
                                     <ExternalLink className="h-4 w-4" />
@@ -128,8 +137,12 @@ export default function DropshippingPage() {
             </div>
 
             {products.length === 0 && !loading && (
-                <div className="text-center py-12 text-gray-500">
-                    Search for products to source from CJ Dropshipping.
+                <div className="p-20 text-center bg-white dark:bg-gray-800 rounded-[2.5rem] border border-dashed border-slate-200 dark:border-slate-700">
+                    <div className="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-slate-50 dark:bg-gray-900 mb-6 transition-transform group-hover:scale-110">
+                        <Search className="w-10 h-10 text-slate-300" />
+                    </div>
+                    <h3 className="text-xl font-black text-gray-900 dark:text-white">Find Products to Source</h3>
+                    <p className="mt-2 text-gray-500 max-w-xs mx-auto font-medium">Use the search bar above to discover and import winning products from CJ Dropshipping.</p>
                 </div>
             )}
         </div>

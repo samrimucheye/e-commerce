@@ -2,13 +2,17 @@
 
 import Link from "next/link";
 import { ShoppingCart, Eye, Heart, Star, Sparkles, Flame } from "lucide-react";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from "framer-motion";
+import { useWishlist } from "@/context/WishlistContext";
 
 interface ProductCardProps {
     product: any;
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
+    const { toggleWishlist, isInWishlist } = useWishlist();
+    const isWishlisted = isInWishlist(product._id);
+
     const x = useMotionValue(0);
     const y = useMotionValue(0);
 
@@ -64,8 +68,23 @@ export default function ProductCard({ product }: ProductCardProps) {
                 )}
             </div>
 
-            <button className="absolute top-5 right-5 z-20 p-3 bg-white/10 dark:bg-black/10 backdrop-blur-md rounded-2xl text-slate-400 hover:text-rose-500 hover:bg-white dark:hover:bg-slate-800 transition-all shadow-sm" style={{ transform: "translateZ(50px)" }}>
-                <Heart className="w-5 h-5" />
+            <button
+                onClick={(e) => {
+                    e.preventDefault();
+                    toggleWishlist(product._id);
+                }}
+                className={`absolute top-5 right-5 z-20 p-3 backdrop-blur-md rounded-2xl transition-all shadow-sm ${isWishlisted
+                        ? 'bg-rose-500 text-white shadow-rose-500/20'
+                        : 'bg-white/10 dark:bg-black/10 text-slate-400 hover:text-rose-500 hover:bg-white dark:hover:bg-slate-800'
+                    }`}
+                style={{ transform: "translateZ(50px)" }}
+            >
+                <motion.div
+                    animate={isWishlisted ? { scale: [1, 1.5, 1] } : { scale: 1 }}
+                    transition={{ duration: 0.3 }}
+                >
+                    <Heart className={`w-5 h-5 ${isWishlisted ? 'fill-current' : ''}`} />
+                </motion.div>
             </button>
 
             <Link href={`/products/${product.slug}`} className="block relative aspect-[4/5] overflow-hidden">

@@ -6,6 +6,7 @@ import { DollarSign, Package, Users, ShoppingCart, ArrowUpRight, TrendingUp } fr
 import SalesChart from "@/components/admin/SalesChart";
 import CategoryChart from "@/components/admin/CategoryChart";
 import AnimatedSection from "@/components/animations/AnimatedSection";
+import DownloadReportButton from "@/components/admin/DownloadReportButton";
 
 // Ensure model is registered
 import "@/models/Category";
@@ -50,17 +51,15 @@ export default async function AdminDashboard() {
     const stats = await getStats();
 
     return (
-        <div className="space-y-10 pb-10">
-            <div className="flex items-center justify-between">
+        <div className="space-y-6 lg:space-y-10 pb-10">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
                 <div>
-                    <h1 className="text-4xl font-black text-slate-900 dark:text-white tracking-tight">Dashboard Overview</h1>
+                    <h1 className="text-3xl lg:text-4xl font-black text-slate-900 dark:text-white tracking-tight">Dashboard Overview</h1>
                     <p className="text-slate-500 font-medium mt-1">Welcome back. Here's what's happening today.</p>
                 </div>
-                <div className="flex gap-3">
-                    <button className="px-6 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl text-sm font-black text-slate-700 dark:text-slate-300 hover:bg-slate-50 transition-colors shadow-sm">
-                        Download Report
-                    </button>
-                    <button className="px-6 py-3 bg-indigo-600 rounded-2xl text-sm font-black text-white hover:bg-indigo-700 transition-colors shadow-xl shadow-indigo-600/20">
+                <div className="flex flex-wrap gap-3 w-full sm:w-auto">
+                    <DownloadReportButton />
+                    <button className="flex-1 sm:flex-none px-6 py-3 bg-indigo-600 rounded-2xl text-sm font-black text-white hover:bg-indigo-700 transition-colors shadow-xl shadow-indigo-600/20">
                         Manage Orders
                     </button>
                 </div>

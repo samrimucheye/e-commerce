@@ -3,13 +3,15 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/context/CartContext";
+import { useWishlist } from "@/context/WishlistContext";
 import { useSession, signOut } from "next-auth/react";
-import { ShoppingCart, Menu, X, User, Search } from "lucide-react";
+import { ShoppingCart, Menu, X, User, Search, Heart } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import ThemeToggle from "./ThemeToggle";
 
 export default function Navbar() {
     const { totalItems } = useCart();
+    const { wishlist } = useWishlist();
     const { data: session } = useSession();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
@@ -164,6 +166,15 @@ export default function Navbar() {
                                 <Search className="h-5 w-5" />
                             </button>
                         </div>
+
+                        <Link href="/wishlist" className="relative p-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors group">
+                            <Heart className="h-5 w-5 group-hover:text-rose-500 transition-colors" />
+                            {wishlist.length > 0 && (
+                                <span className="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-rose-500 text-[10px] font-bold text-white">
+                                    {wishlist.length}
+                                </span>
+                            )}
+                        </Link>
 
                         <Link href="/cart" className="relative p-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors group">
                             <ShoppingCart className="h-5 w-5 group-hover:text-indigo-600 transition-colors" />

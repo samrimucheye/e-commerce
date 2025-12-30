@@ -12,6 +12,7 @@ export interface IUser {
     city?: string;
     postalCode?: string;
     country?: string;
+    wishlist: mongoose.Types.ObjectId[];
     createdAt: Date;
     updatedAt: Date;
 }
@@ -27,23 +28,26 @@ const UserSchema = new Schema<IUser>(
         city: { type: String },
         postalCode: { type: String },
         country: { type: String },
+        wishlist: { type: [{ type: Schema.Types.ObjectId, ref: 'Product' }], default: [] },
     },
     { timestamps: true }
 );
 
 // Hash password before saving
-UserSchema.pre('save' as any, async function (this: any, next: (err?: mongoose.CallbackError) => void) {
+UserSchema.pre('save', function (this: any, next: any) {
     if (!this.isModified('password') || !this.password) {
-        return next();
+        return typeof next === 'function' ? next() : Promise.resolve();
     }
 
-    try {
-        const salt = await bcrypt.genSalt(10);
-        this.password = await bcrypt.hash(this.password, salt);
-        next();
-    } catch (error: any) {
-        next(error as mongoose.CallbackError);
-    }
+    const user = this;
+    bcrypt.genSalt(10, (err, salt) => {
+        if (err) return typeof next === 'function' ? next(err) : Promise.reject(err);
+        bcrypt.hash(user.password!, salt!, (err, hash) => {
+            if (err) return typeof next === 'function' ? next(err) : Promise.reject(err);
+            user.password = hash;
+            if (typeof next === 'function') next();
+        });
+    });
 });
 
 const User: Model<IUser> =

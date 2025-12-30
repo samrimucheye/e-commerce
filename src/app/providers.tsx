@@ -2,6 +2,7 @@
 
 import { SessionProvider } from "next-auth/react";
 import { CartProvider } from "@/context/CartContext";
+import { WishlistProvider } from "@/context/WishlistContext";
 import { ThemeProvider } from "next-themes";
 
 export function Providers({ children }: { children: React.ReactNode }) {
@@ -9,7 +10,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
         <SessionProvider>
             <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
                 <CartProvider>
-                    {children}
+                    <WishlistProvider>
+                        {children}
+                    </WishlistProvider>
                 </CartProvider>
             </ThemeProvider>
         </SessionProvider>
