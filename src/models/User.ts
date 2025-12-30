@@ -1,4 +1,5 @@
 import mongoose, { Schema, Model } from 'mongoose';
+import bcrypt from 'bcryptjs';
 
 export interface IUser {
     _id: string;
@@ -29,6 +30,21 @@ const UserSchema = new Schema<IUser>(
     },
     { timestamps: true }
 );
+
+// Hash password before saving
+UserSchema.pre('save' as any, async function (this: any, next: (err?: mongoose.CallbackError) => void) {
+    if (!this.isModified('password') || !this.password) {
+        return next();
+    }
+
+    try {
+        const salt = await bcrypt.genSalt(10);
+        this.password = await bcrypt.hash(this.password, salt);
+        next();
+    } catch (error: any) {
+        next(error as mongoose.CallbackError);
+    }
+});
 
 const User: Model<IUser> =
     mongoose.models.User || mongoose.model<IUser>('User', UserSchema);

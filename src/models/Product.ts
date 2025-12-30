@@ -19,6 +19,9 @@ export interface IProduct extends Document {
         stock?: number;
     }[];
     isFeatured: boolean;
+    isNewArrival: boolean;
+    isOnSale: boolean;
+    salePrice?: number;
     createdAt: Date;
     updatedAt: Date;
 }
@@ -44,6 +47,9 @@ const ProductSchema = new Schema<IProduct>(
             },
         ],
         isFeatured: { type: Boolean, default: false },
+        isNewArrival: { type: Boolean, default: false },
+        isOnSale: { type: Boolean, default: false },
+        salePrice: { type: Number },
     },
     { timestamps: true }
 );

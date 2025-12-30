@@ -51,33 +51,31 @@ export default async function AdminOrdersPage() {
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
                         {orders.map((order: any) => (
-                            <li key={order._id} className="contents">
-                                <tr>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                        #{order._id.slice(-6)}
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        {order.user?.name || "Guest"}
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        {new Date(order.createdAt).toLocaleDateString()}
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-bold">
-                                        ${order.totalAmount.toFixed(2)}
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap">
-                                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${statusColors[order.status]}`}>
-                                            <StatusIcon status={order.status} />
-                                            {order.status}
-                                        </span>
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        <Link href={`/admin/orders/${order._id}`} className="text-indigo-600 hover:text-indigo-900">
-                                            View
-                                        </Link>
-                                    </td>
-                                </tr>
-                            </li>
+                            <tr key={order._id}>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                    #{order._id.slice(-6)}
+                                </td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    {order.user?.name || "Guest"}
+                                </td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    {new Date(order.createdAt).toLocaleDateString()}
+                                </td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-bold">
+                                    ${order.totalAmount.toFixed(2)}
+                                </td>
+                                <td className="px-6 py-4 whitespace-nowrap">
+                                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${statusColors[order.status]}`}>
+                                        <StatusIcon status={order.status} />
+                                        {order.status}
+                                    </span>
+                                </td>
+                                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                    <Link href={`/admin/orders/${order._id}`} className="text-indigo-600 hover:text-indigo-900">
+                                        View
+                                    </Link>
+                                </td>
+                            </tr>
                         ))}
                     </tbody>
                 </table>

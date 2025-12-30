@@ -1,107 +1,229 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
-import Image from "next/image";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Sparkles } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const slides = [
     {
         image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=1600&h=800&auto=format&fit=crop",
         title: "Modern Collections",
+        subtitle: "DESIGNED FOR YOUR LIFESTYLE",
         description: "Discover our latest arrivals of premium quality products designed for your lifestyle.",
         cta: "Shop New Arrivals",
-        link: "/products"
+        link: "/products",
+        color: "indigo"
     },
     {
         image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=1600&h=800&auto=format&fit=crop",
         title: "Tech Innovation",
+        subtitle: "SMART SOLUTIONS FOR THE FUTURE",
         description: "Stay ahead with the latest gadgets and electronics at unbeatable prices.",
         cta: "Explore Tech",
-        link: "/products"
+        link: "/products",
+        color: "rose"
     },
     {
         image: "https://images.unsplash.com/photo-1449247701024-2c11438f2f63?q=80&w=1600&h=800&auto=format&fit=crop",
         title: "Home Essentials",
+        subtitle: "TRANSFORM YOUR SPACE",
         description: "Transform your living space with our curated home and lifestyle essentials.",
         cta: "Browse Home",
-        link: "/products"
+        link: "/products",
+        color: "emerald"
     }
 ];
 
 export default function HeroSlider() {
     const [current, setCurrent] = useState(0);
+    const [direction, setDirection] = useState(0);
 
-    useEffect(() => {
-        const timer = setInterval(() => {
-            setCurrent((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
-        }, 5000);
-        return () => clearInterval(timer);
+    const paginate = useCallback((newDirection: number) => {
+        setDirection(newDirection);
+        setCurrent((prev) => (prev + newDirection + slides.length) % slides.length);
     }, []);
 
-    const nextSlide = () => setCurrent((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
-    const prevSlide = () => setCurrent((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
+    useEffect(() => {
+        const timer = setInterval(() => paginate(1), 6000);
+        return () => clearInterval(timer);
+    }, [paginate]);
+
+    const variants = {
+        enter: (direction: number) => ({
+            x: direction > 0 ? 1000 : -1000,
+            opacity: 0
+        }),
+        center: {
+            zIndex: 1,
+            x: 0,
+            opacity: 1
+        },
+        exit: (direction: number) => ({
+            zIndex: 0,
+            x: direction < 0 ? 1000 : -1000,
+            opacity: 0
+        })
+    };
 
     return (
-        <div className="relative h-[500px] w-full overflow-hidden group">
-            {/* Slides */}
-            {slides.map((slide, index) => (
-                <div
-                    key={index}
-                    className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === current ? "opacity-100 z-10" : "opacity-0 z-0"
-                        }`}
+        <div className="relative h-[600px] md:h-[750px] w-full overflow-hidden bg-slate-950">
+            <AnimatePresence initial={false} custom={direction}>
+                <motion.div
+                    key={current}
+                    custom={direction}
+                    variants={variants}
+                    initial="enter"
+                    animate="center"
+                    exit="exit"
+                    transition={{
+                        x: { type: "spring", stiffness: 300, damping: 30 },
+                        opacity: { duration: 0.2 }
+                    }}
+                    className="absolute inset-0"
                 >
-                    <Image
-                        src={slide.image}
-                        alt={slide.title}
-                        fill
-                        priority={index === 0}
-                        className="object-cover"
-                    />
-                    {/* Overlay */}
-                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                        <div className="max-w-3xl px-6 text-center transform transition-transform duration-700 delay-300 translate-y-0 text-white">
-                            <h1 className="text-4xl md:text-6xl font-bold mb-4 tracking-tight drop-shadow-lg">
-                                {slide.title}
-                            </h1>
-                            <p className="text-lg md:text-xl mb-8 text-gray-100 drop-shadow-md">
-                                {slide.description}
-                            </p>
-                            <Link
-                                href={slide.link}
-                                className="inline-block bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 px-8 rounded-full transition-all hover:scale-105 shadow-xl"
+                    <motion.div
+                        initial={{ scale: 1.2 }}
+                        animate={{ scale: 1 }}
+                        transition={{ duration: 6 }}
+                        className="relative w-full h-full"
+                    >
+                        <img
+                            src={slides[current].image}
+                            alt={slides[current].title}
+                            className="w-full h-full object-cover"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/80 via-slate-950/40 to-transparent" />
+                    </motion.div>
+
+                    {/* Content Section */}
+                    <div className="absolute inset-0 flex items-center px-4 sm:px-12 lg:px-24">
+                        <div className="max-w-3xl space-y-6">
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.3 }}
+                                className="flex items-center gap-3"
                             >
-                                {slide.cta}
-                            </Link>
+                                <span className={`h-[2px] w-12 bg-indigo-500`} />
+                                <span className="text-indigo-400 font-black text-xs uppercase tracking-[0.3em]">{slides[current].subtitle}</span>
+                            </motion.div>
+
+                            <motion.h1
+                                initial={{ opacity: 0, y: 30 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.4 }}
+                                className="text-6xl md:text-8xl font-black text-white tracking-tighter leading-none"
+                            >
+                                {slides[current].title.split(' ').map((word, i) => (
+                                    <span key={i} className="inline-block mr-4">
+                                        {word}
+                                    </span>
+                                ))}
+                            </motion.h1>
+
+                            <motion.p
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.5 }}
+                                className="text-xl text-slate-300 max-w-xl font-medium leading-relaxed"
+                            >
+                                {slides[current].description}
+                            </motion.p>
+
+                            <motion.div
+                                initial={{ opacity: 0, scale: 0.9 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                transition={{ delay: 0.6 }}
+                                className="pt-4 flex items-center gap-6"
+                            >
+                                <Link
+                                    href={slides[current].link}
+                                    className="group relative inline-flex items-center justify-center px-10 py-5 font-black text-white transition-all duration-300 bg-indigo-600 rounded-[2rem] hover:bg-indigo-700 shadow-2xl shadow-indigo-600/30 overflow-hidden"
+                                >
+                                    <span className="relative z-10 flex items-center">
+                                        {slides[current].cta}
+                                        <ChevronRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                                    </span>
+                                    <motion.div
+                                        className="absolute inset-0 bg-white/20"
+                                        initial={{ x: "-100%" }}
+                                        whileHover={{ x: "0%" }}
+                                        transition={{ duration: 0.3 }}
+                                    />
+                                </Link>
+
+                                <button className="p-5 border-2 border-slate-700/50 rounded-[2rem] text-white hover:bg-white hover:text-slate-950 transition-all">
+                                    <Sparkles className="w-6 h-6" />
+                                </button>
+                            </motion.div>
                         </div>
                     </div>
+                </motion.div>
+            </AnimatePresence>
+
+            {/* 3D-feeling decorative orbs */}
+            <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                <motion.div
+                    animate={{
+                        y: [0, -40, 0],
+                        rotate: [0, 90, 0],
+                        scale: [1, 1.2, 1]
+                    }}
+                    transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+                    className="absolute top-1/4 -right-20 w-80 h-80 bg-indigo-600/20 rounded-full blur-[100px]"
+                />
+                <motion.div
+                    animate={{
+                        y: [0, 60, 0],
+                        x: [0, 40, 0],
+                        scale: [1, 1.1, 1]
+                    }}
+                    transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+                    className="absolute -bottom-20 left-1/4 w-96 h-96 bg-rose-600/10 rounded-full blur-[120px]"
+                />
+            </div>
+
+            {/* Pagination Controls */}
+            <div className="absolute bottom-12 left-4 sm:left-12 lg:left-24 z-20 flex items-center gap-6">
+                <div className="flex gap-3">
+                    {slides.map((_, index) => (
+                        <button
+                            key={index}
+                            onClick={() => {
+                                setDirection(index > current ? 1 : -1);
+                                setCurrent(index);
+                            }}
+                            className="relative h-1 bg-slate-800 rounded-full overflow-hidden transition-all duration-500"
+                            style={{ width: index === current ? "60px" : "30px" }}
+                        >
+                            {index === current && (
+                                <motion.div
+                                    layoutId="activeSlide"
+                                    className="absolute inset-0 bg-indigo-500"
+                                    initial={{ width: 0 }}
+                                    animate={{ width: "100%" }}
+                                    transition={{ duration: 6, ease: "linear" }}
+                                />
+                            )}
+                        </button>
+                    ))}
                 </div>
-            ))}
 
-            {/* Controls */}
-            <button
-                onClick={prevSlide}
-                className="absolute left-4 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-white/20 hover:bg-white/40 text-white opacity-0 group-hover:opacity-100 transition-opacity"
-            >
-                <ChevronLeft className="h-6 w-6" />
-            </button>
-            <button
-                onClick={nextSlide}
-                className="absolute right-4 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-white/20 hover:bg-white/40 text-white opacity-0 group-hover:opacity-100 transition-opacity"
-            >
-                <ChevronRight className="h-6 w-6" />
-            </button>
-
-            {/* Indicators */}
-            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex gap-2">
-                {slides.map((_, index) => (
+                <div className="flex gap-2">
                     <button
-                        key={index}
-                        onClick={() => setCurrent(index)}
-                        className={`h-2 rounded-full transition-all ${index === current ? "w-8 bg-indigo-500" : "w-2 bg-white/50"
-                            }`}
-                    />
-                ))}
+                        onClick={() => paginate(-1)}
+                        className="p-3 rounded-full border border-slate-700 text-white hover:bg-white hover:text-slate-950 transition-all active:scale-95"
+                    >
+                        <ChevronLeft className="h-5 w-5" />
+                    </button>
+                    <button
+                        onClick={() => paginate(1)}
+                        className="p-3 rounded-full border border-slate-700 text-white hover:bg-white hover:text-slate-950 transition-all active:scale-95"
+                    >
+                        <ChevronRight className="h-5 w-5" />
+                    </button>
+                </div>
             </div>
         </div>
     );

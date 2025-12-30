@@ -4,6 +4,7 @@ import './globals.css';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { Providers } from './providers';
+import PageTransition from '@/components/animations/PageTransition';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -23,7 +24,9 @@ export default function RootLayout({
         <Providers>
           <div className="min-h-screen flex flex-col">
             <Navbar />
-            <main className="flex-grow">{children}</main>
+            <main className="flex-grow flex flex-col">
+              <PageTransition>{children}</PageTransition>
+            </main>
             <Footer />
           </div>
         </Providers>
