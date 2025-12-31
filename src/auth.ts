@@ -13,20 +13,42 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                     .object({ email: z.string().email(), password: z.string().min(6) })
                     .safeParse(credentials);
 
-                if (parsedCredentials.success) {
-                    const { email, password } = parsedCredentials.data;
+                if (!parsedCredentials.success) {
+                    console.log('❌ Validation failed:', parsedCredentials.error.issues);
+                    return null;
+                }
 
+                const { email, password } = parsedCredentials.data;
+                console.log('🔍 Attempting login for:', email);
+
+                try {
                     await dbConnect();
                     const user = await User.findOne({ email }).select('+password');
 
-                    if (!user) return null;
+                    if (!user) {
+                        console.log('❌ User not found:', email);
+                        return null;
+                    }
 
+                    if (!user.password) {
+                        console.log('❌ User has no password set:', email);
+                        return null;
+                    }
+
+                    console.log('🔐 Comparing passwords...');
                     const passwordsMatch = await bcrypt.compare(password, user.password);
-                    if (passwordsMatch) return user;
-                }
 
-                console.log('Invalid credentials');
-                return null;
+                    if (passwordsMatch) {
+                        console.log('✅ Login successful for:', email);
+                        return user;
+                    } else {
+                        console.log('❌ Password mismatch for:', email);
+                        return null;
+                    }
+                } catch (error) {
+                    console.error('❌ Auth error:', error);
+                    return null;
+                }
             },
         }),
     ],

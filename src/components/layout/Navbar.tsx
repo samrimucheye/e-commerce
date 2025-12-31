@@ -77,7 +77,7 @@ export default function Navbar() {
                     <div className="flex items-center gap-8">
                         <div className="flex flex-shrink-0 items-center">
                             <Link href="/" className="text-2xl font-black text-indigo-600 tracking-tighter hover:scale-105 transition-transform">
-                                STORE<span className="text-gray-900 dark:text-white">.</span>
+                                SAMRI<span className="text-gray-900 dark:text-white">.</span>
                             </Link>
                         </div>
                         <div className="hidden lg:flex lg:space-x-6">
@@ -204,6 +204,13 @@ export default function Navbar() {
                                         Admin
                                     </Link>
                                 )}
+                                <Link
+                                    href="/profile"
+                                    className="p-2 text-gray-500 hover:bg-indigo-50 hover:text-indigo-600 dark:hover:bg-indigo-900/20 rounded-full transition-colors"
+                                    title="My Profile"
+                                >
+                                    <User className="h-5 w-5" />
+                                </Link>
                                 <button
                                     onClick={() => signOut()}
                                     className="p-2 text-gray-500 hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-900/20 rounded-full transition-colors"
@@ -316,15 +323,24 @@ export default function Navbar() {
                                         <span className="text-xs text-gray-500">{(session.user as any).role || 'Customer'}</span>
                                     </div>
                                 </div>
-                                {(session.user as any).role === 'admin' && (
+                                <div className="grid grid-cols-1 gap-2">
                                     <Link
-                                        href="/admin"
+                                        href="/profile"
                                         onClick={() => setIsMenuOpen(false)}
-                                        className="block w-full py-3 px-4 text-center text-sm font-bold bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-xl"
+                                        className="block w-full py-3 px-4 text-center text-sm font-bold bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 rounded-xl"
                                     >
-                                        Admin Dashboard
+                                        My Profile
                                     </Link>
-                                )}
+                                    {(session.user as any).role === 'admin' && (
+                                        <Link
+                                            href="/admin"
+                                            onClick={() => setIsMenuOpen(false)}
+                                            className="block w-full py-3 px-4 text-center text-sm font-bold bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-xl"
+                                        >
+                                            Admin Dashboard
+                                        </Link>
+                                    )}
+                                </div>
                                 <button
                                     onClick={() => signOut()}
                                     className="block w-full py-3 px-4 text-center text-sm font-bold text-red-600 border border-red-100 dark:border-red-900/30 rounded-xl"

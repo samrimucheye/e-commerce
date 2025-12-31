@@ -3,9 +3,19 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
 import { useSession } from "next-auth/react";
 
+interface Product {
+    _id: string;
+    name: string;
+    slug: string;
+    price: number;
+    images: string[];
+    stock: number;
+}
+
 interface WishlistContextType {
-    wishlist: string[];
+    wishlist: Product[];
     toggleWishlist: (productId: string) => Promise<void>;
+    removeFromWishlist: (productId: string) => Promise<void>;
     isInWishlist: (productId: string) => boolean;
     loading: boolean;
 }
@@ -14,7 +24,7 @@ const WishlistContext = createContext<WishlistContextType | undefined>(undefined
 
 export const WishlistProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const { data: session } = useSession();
-    const [wishlist, setWishlist] = useState<string[]>([]);
+    const [wishlist, setWishlist] = useState<Product[]>([]);
     const [loading, setLoading] = useState(false);
 
     const fetchWishlist = useCallback(async () => {
@@ -24,7 +34,7 @@ export const WishlistProvider: React.FC<{ children: React.ReactNode }> = ({ chil
             const res = await fetch("/api/wishlist");
             if (res.ok) {
                 const data = await res.json();
-                setWishlist(data.map((p: any) => p._id));
+                setWishlist(data); // Store full product objects
             }
         } catch (error) {
             console.error("Failed to fetch wishlist", error);
@@ -51,18 +61,21 @@ export const WishlistProvider: React.FC<{ children: React.ReactNode }> = ({ chil
             });
 
             if (res.ok) {
-                const data = await res.json();
-                setWishlist(data.wishlist);
+                await fetchWishlist(); // Refresh wishlist after toggle
             }
         } catch (error) {
             console.error("Failed to toggle wishlist", error);
         }
     };
 
-    const isInWishlist = (productId: string) => wishlist.includes(productId);
+    const removeFromWishlist = async (productId: string) => {
+        await toggleWishlist(productId); // Toggle will remove if already in wishlist
+    };
+
+    const isInWishlist = (productId: string) => wishlist.some(p => p._id === productId);
 
     return (
-        <WishlistContext.Provider value={{ wishlist, toggleWishlist, isInWishlist, loading }}>
+        <WishlistContext.Provider value={{ wishlist, toggleWishlist, removeFromWishlist, isInWishlist, loading }}>
             {children}
         </WishlistContext.Provider>
     );

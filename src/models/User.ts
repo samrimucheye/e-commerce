@@ -34,20 +34,17 @@ const UserSchema = new Schema<IUser>(
 );
 
 // Hash password before saving
-UserSchema.pre('save', function (this: any, next: any) {
+UserSchema.pre('save', async function (this: any) {
     if (!this.isModified('password') || !this.password) {
-        return typeof next === 'function' ? next() : Promise.resolve();
+        return;
     }
 
-    const user = this;
-    bcrypt.genSalt(10, (err, salt) => {
-        if (err) return typeof next === 'function' ? next(err) : Promise.reject(err);
-        bcrypt.hash(user.password!, salt!, (err, hash) => {
-            if (err) return typeof next === 'function' ? next(err) : Promise.reject(err);
-            user.password = hash;
-            if (typeof next === 'function') next();
-        });
-    });
+    try {
+        const salt = await bcrypt.genSalt(10);
+        this.password = await bcrypt.hash(this.password, salt);
+    } catch (error) {
+        throw error;
+    }
 });
 
 const User: Model<IUser> =

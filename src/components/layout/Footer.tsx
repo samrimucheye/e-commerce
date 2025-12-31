@@ -54,23 +54,30 @@ export default function Footer() {
 
                     {/* Support */}
                     <div>
-                        <h3 className="text-sm font-bold uppercase tracking-widest text-white mb-6">Support</h3>
-                        <ul className="space-y-4 text-sm">
+                        <h3 className="text-white font-bold text-lg mb-4">Support</h3>
+                        <ul className="space-y-2">
                             <li>
-                                <Link href="/contact" className="hover:text-white transition-colors">Contact Us</Link>
+                                <Link href="/contact" className="text-gray-400 hover:text-white transition-colors">
+                                    Contact Us
+                                </Link>
                             </li>
                             <li>
-                                <a href="#" className="hover:text-white transition-colors">Returns & Exchanges</a>
+                                <Link href="/returns" className="text-gray-400 hover:text-white transition-colors">
+                                    Returns & Exchanges
+                                </Link>
                             </li>
                             <li>
-                                <Link href="/shipping-policy" className="hover:text-white transition-colors">Shipping Policy</Link>
+                                <Link href="/shipping-policy" className="text-gray-400 hover:text-white transition-colors">
+                                    Shipping Policy
+                                </Link>
                             </li>
                             <li>
-                                <Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
+                                <Link href="/terms" className="text-gray-400 hover:text-white transition-colors">
+                                    Terms & Conditions
+                                </Link>
                             </li>
                         </ul>
                     </div>
-
                     {/* Newsletter */}
                     <div className="space-y-6">
                         <h3 className="text-sm font-bold uppercase tracking-widest text-white mb-6">Newsletter</h3>

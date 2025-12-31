@@ -97,26 +97,26 @@ export default function HeroSlider() {
                     </motion.div>
 
                     {/* Content Section */}
-                    <div className="absolute inset-0 flex items-center px-4 sm:px-12 lg:px-24">
-                        <div className="max-w-3xl space-y-6">
+                    <div className="absolute inset-0 flex items-center px-6 sm:px-12 lg:px-24">
+                        <div className="max-w-3xl space-y-4 md:space-y-6">
                             <motion.div
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: 0.3 }}
                                 className="flex items-center gap-3"
                             >
-                                <span className={`h-[2px] w-12 bg-indigo-500`} />
-                                <span className="text-indigo-400 font-black text-xs uppercase tracking-[0.3em]">{slides[current].subtitle}</span>
+                                <span className="h-[2px] w-8 md:w-12 bg-indigo-500" />
+                                <span className="text-indigo-400 font-black text-[10px] md:text-xs uppercase tracking-[0.3em]">{slides[current].subtitle}</span>
                             </motion.div>
 
                             <motion.h1
                                 initial={{ opacity: 0, y: 30 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: 0.4 }}
-                                className="text-6xl md:text-8xl font-black text-white tracking-tighter leading-none"
+                                className="text-5xl sm:text-7xl md:text-8xl font-black text-white tracking-tighter leading-[0.9] sm:leading-none"
                             >
                                 {slides[current].title.split(' ').map((word, i) => (
-                                    <span key={i} className="inline-block mr-4">
+                                    <span key={i} className="inline-block mr-3 md:mr-4">
                                         {word}
                                     </span>
                                 ))}
@@ -126,7 +126,7 @@ export default function HeroSlider() {
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: 0.5 }}
-                                className="text-xl text-slate-300 max-w-xl font-medium leading-relaxed"
+                                className="text-lg md:text-xl text-slate-300 max-w-xl font-medium leading-relaxed"
                             >
                                 {slides[current].description}
                             </motion.p>
@@ -135,15 +135,15 @@ export default function HeroSlider() {
                                 initial={{ opacity: 0, scale: 0.9 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 transition={{ delay: 0.6 }}
-                                className="pt-4 flex items-center gap-6"
+                                className="pt-2 md:pt-4 flex items-center gap-4 md:gap-6"
                             >
                                 <Link
                                     href={slides[current].link}
-                                    className="group relative inline-flex items-center justify-center px-10 py-5 font-black text-white transition-all duration-300 bg-indigo-600 rounded-[2rem] hover:bg-indigo-700 shadow-2xl shadow-indigo-600/30 overflow-hidden"
+                                    className="group relative inline-flex items-center justify-center px-8 md:px-10 py-4 md:py-5 text-sm md:text-base font-black text-white transition-all duration-300 bg-indigo-600 rounded-2xl md:rounded-[2rem] hover:bg-indigo-700 shadow-2xl shadow-indigo-600/30 overflow-hidden"
                                 >
                                     <span className="relative z-10 flex items-center">
                                         {slides[current].cta}
-                                        <ChevronRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                                        <ChevronRight className="w-4 h-4 md:w-5 md:h-5 ml-2 group-hover:translate-x-1 transition-transform" />
                                     </span>
                                     <motion.div
                                         className="absolute inset-0 bg-white/20"
@@ -153,8 +153,8 @@ export default function HeroSlider() {
                                     />
                                 </Link>
 
-                                <button className="p-5 border-2 border-slate-700/50 rounded-[2rem] text-white hover:bg-white hover:text-slate-950 transition-all">
-                                    <Sparkles className="w-6 h-6" />
+                                <button className="p-4 md:p-5 border-2 border-slate-700/50 rounded-2xl md:rounded-[2rem] text-white hover:bg-white hover:text-slate-950 transition-all">
+                                    <Sparkles className="w-5 h-5 md:w-6 md:h-6" />
                                 </button>
                             </motion.div>
                         </div>

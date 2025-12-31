@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/db';
 import User from '@/models/User';
-import bcrypt from 'bcryptjs';
 import { z } from 'zod';
 
 const registerSchema = z.object({
@@ -25,12 +24,11 @@ export async function POST(req: Request) {
             );
         }
 
-        const hashedPassword = await bcrypt.hash(password, 12);
-
+        // Password will be hashed by the User model's pre-save hook
         const user = await User.create({
             name,
             email,
-            password: hashedPassword,
+            password, // Pass plain password - pre-save hook will hash it
         });
 
         return NextResponse.json(
