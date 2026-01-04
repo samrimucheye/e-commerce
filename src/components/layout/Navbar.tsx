@@ -77,7 +77,7 @@ export default function Navbar() {
                     <div className="flex items-center gap-8">
                         <div className="flex flex-shrink-0 items-center">
                             <Link href="/" className="text-2xl font-black text-indigo-600 tracking-tighter hover:scale-105 transition-transform">
-                                SAMRI<span className="text-gray-900 dark:text-white">.</span>
+                                SENAY<span className="text-gray-900 dark:text-white">.</span>
                             </Link>
                         </div>
                         <div className="hidden lg:flex lg:space-x-6">

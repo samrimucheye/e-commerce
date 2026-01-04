@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ReactNode } from "react";
+import { ReactNode, useState, useEffect } from "react";
 
 interface AnimatedSectionProps {
     children: ReactNode;
@@ -22,6 +22,16 @@ export default function AnimatedSection({
         left: { x: 40 },
         right: { x: -40 }
     };
+
+    const [isMounted, setIsMounted] = useState(false);
+
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
+
+    if (!isMounted) {
+        return <div className={className}>{children}</div>;
+    }
 
     return (
         <motion.div

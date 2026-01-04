@@ -3,6 +3,7 @@ import dbConnect from "@/lib/db";
 import Product from "@/models/Product";
 import Category from "@/models/Category";
 import ProductCard from "@/components/product/ProductCard";
+import CategoryFilter from "@/components/product/CategoryFilter";
 import ProductSort from "@/components/product/ProductSort";
 
 async function getProducts({ search, category, sort }: { search?: string, category?: string, sort?: string }) {
@@ -38,17 +39,31 @@ async function getProducts({ search, category, sort }: { search?: string, catego
     }
 }
 
+
+
+// Fetch categories helper
+async function getCategories() {
+    await dbConnect();
+    const categories = await Category.find({}).lean();
+    return JSON.parse(JSON.stringify(categories));
+}
+
 export default async function ProductsPage({
     searchParams,
 }: {
     searchParams: Promise<{ search?: string; category?: string; sort?: string }>;
 }) {
     const filters = await searchParams;
-    const products = await getProducts({
-        search: filters.search,
-        category: filters.category,
-        sort: filters.sort
-    });
+
+    // Fetch data in parallel
+    const [products, categories] = await Promise.all([
+        getProducts({
+            search: filters.search,
+            category: filters.category,
+            sort: filters.sort
+        }),
+        getCategories()
+    ]);
 
     return (
         <div className="bg-white dark:bg-gray-900 min-h-screen">
@@ -60,9 +75,15 @@ export default async function ProductsPage({
                             {products.length} products found
                         </p>
                     </div>
-                    <div className="mt-4 md:mt-0 flex items-center space-x-4">
-                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Sort by:</span>
-                        <ProductSort />
+                    <div className="mt-4 md:mt-0 flex flex-col sm:flex-row items-center gap-4">
+                        <div className="flex items-center space-x-2">
+                            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Category:</span>
+                            <CategoryFilter categories={categories} />
+                        </div>
+                        <div className="flex items-center space-x-2">
+                            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Sort by:</span>
+                            <ProductSort />
+                        </div>
                     </div>
                 </div>
 
