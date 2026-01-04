@@ -17,6 +17,7 @@ export interface IProduct extends Document {
         value: string; // e.g., 'M', 'Red'
         priceAdjustment?: number;
         stock?: number;
+        image?: string;
     }[];
     isFeatured: boolean;
     isNewArrival: boolean;
@@ -44,6 +45,7 @@ const ProductSchema = new Schema<IProduct>(
                 value: { type: String, required: true },
                 priceAdjustment: { type: Number, default: 0 },
                 stock: { type: Number, default: 0 },
+                image: { type: String }
             },
         ],
         isFeatured: { type: Boolean, default: false },

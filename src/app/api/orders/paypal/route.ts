@@ -31,6 +31,7 @@ async function generateAccessToken() {
         return data.access_token;
     } catch (error) {
         console.error("Failed to generate Access Token:", error);
+        return null;
     }
 }
 
@@ -99,7 +100,18 @@ export async function POST(req: Request) {
         });
 
         const accessToken = await generateAccessToken();
+        if (!accessToken) {
+            return NextResponse.json({ message: "Failed to generate PayPal access token" }, { status: 500 });
+        }
+
         const url = `${PAYPAL_API}/v2/checkout/orders`;
+
+        // Ensure Base URL is valid
+        // Ensure Base URL is valid (handle 'undefined' string case)
+        let baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+        if (!baseUrl || baseUrl === "undefined") {
+            baseUrl = "http://localhost:3000";
+        }
 
         const payload = {
             intent: "CAPTURE",
@@ -115,8 +127,10 @@ export async function POST(req: Request) {
             ],
             // Optional: Add application context for return URLs
             application_context: {
-                return_url: `${process.env.NEXT_PUBLIC_BASE_URL}/order/${order._id}/success`,
-                cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/order/${order._id}/cancel`,
+                return_url: `${baseUrl}/order/${order._id}/success`,
+                cancel_url: `${baseUrl}/order/${order._id}/cancel`,
+                shipping_preference: "NO_SHIPPING", // We collect address ourselves
+                user_action: "PAY_NOW"
             }
         };
 
@@ -130,8 +144,19 @@ export async function POST(req: Request) {
         });
 
         const data = await response.json();
+
+        if (!response.ok) {
+            console.error("PayPal Create Order Failed:", data);
+            return NextResponse.json({
+                message: "PayPal Error",
+                details: data,
+                sentPayload: payload // sending payload back to client for debug
+            }, { status: response.status });
+        }
+
         return NextResponse.json(data);
     } catch (error: any) {
+        console.error("API Error:", error);
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }

@@ -47,7 +47,7 @@ export default function CartPage() {
                                         <div>
                                             <div className="flex justify-between text-base font-medium text-gray-900 dark:text-white">
                                                 <h3>
-                                                    <Link href={`/products/${item.productId}`}>{item.name}</Link>
+                                                    <Link href={`/products/${item.slug || item.productId}`}>{item.name}</Link>
                                                 </h3>
                                                 <p className="ml-4">${(item.price * item.quantity).toFixed(2)}</p>
                                             </div>

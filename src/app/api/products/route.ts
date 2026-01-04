@@ -60,11 +60,25 @@ export async function POST(req: Request) {
         await dbConnect();
         const body = await req.json();
 
+        // Validate Category ID to prevent CastError
+        if (!body.category || body.category === "") {
+            return NextResponse.json({ message: 'Category is required' }, { status: 400 });
+        }
+
         // Quick validation could be added here or via Zod
         const product = await Product.create(body);
 
         return NextResponse.json(product, { status: 201 });
     } catch (error: any) {
+        console.error('❌ Error creating product:', error);
+
+        if (error.code === 11000) {
+            return NextResponse.json(
+                { message: 'A product with this slug/name already exists.', error: 'Duplicate key error' },
+                { status: 400 }
+            );
+        }
+
         return NextResponse.json(
             { message: 'Error creating product', error: error.message },
             { status: 500 }

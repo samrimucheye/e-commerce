@@ -13,16 +13,36 @@ const ButtonWrapper = ({ showSpinner, shippingAddress }: { showSpinner: boolean,
 
     const createOrder = async () => {
         try {
+            console.log("Creating PayPal order with:", { items, shippingAddress }); // Debug log
+
             const response = await fetch("/api/orders/paypal", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ items, shippingAddress }),
             });
-            const order = await response.json();
-            return order.id; // Returns PayPal Order ID
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                console.error("PayPal API Error:", data);
+                const err = new Error(data.message || data.error || "Failed to create order");
+                (err as any).details = data.details;
+                throw err;
+            }
+
+            if (!data.id) {
+                console.error("PayPal API returned no ID:", data);
+                throw new Error("Invalid response from PayPal API");
+            }
+
+            return data.id;
         } catch (error) {
-            console.error("Error creating order:", error);
-            throw error;
+            console.error("Error inside createOrder:", error);
+            // Alert user so they know why it failed
+            const errorMessage = error instanceof Error ? error.message : "Unknown error";
+            const errorDetails = (error as any).details ? JSON.stringify((error as any).details, null, 2) : "";
+            alert(`Payment setup failed: ${errorMessage}\n${errorDetails}`);
+            throw error; // Rethrow so PayPal SDK handles it
         }
     };
 
