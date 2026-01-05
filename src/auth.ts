@@ -4,8 +4,10 @@ import dbConnect from './lib/db';
 import User from './models/User';
 import bcrypt from 'bcryptjs';
 import { z } from 'zod';
+import { authConfig } from './auth.config';
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+    ...authConfig,
     providers: [
         Credentials({
             async authorize(credentials) {
@@ -52,29 +54,4 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             },
         }),
     ],
-    pages: {
-        signIn: '/login',
-    },
-    callbacks: {
-        async jwt({ token, user, trigger, session }) {
-            if (user) {
-                token.role = (user as any).role;
-                token.id = user.id;
-            }
-            if (trigger === "update" && session) {
-                token = { ...token, ...session.user };
-            }
-            return token;
-        },
-        async session({ session, token }) {
-            if (token) {
-                session.user.id = token.id as string;
-                (session.user as any).role = token.role as string;
-            }
-            return session;
-        },
-    },
-    session: {
-        strategy: "jwt",
-    },
 });
