@@ -32,10 +32,10 @@ export async function GET(req: Request) {
         // Format orders for client
         const formattedOrders = orders.map(order => ({
             _id: order._id.toString(),
-            orderNumber: order.orderNumber || order._id.toString().slice(-8).toUpperCase(),
+            orderNumber: (order as any).orderNumber || order._id.toString().slice(-8).toUpperCase(),
             totalAmount: order.totalAmount,
             status: order.status,
-            paymentStatus: order.paymentStatus,
+            paymentStatus: (order as any).paymentStatus || (order.isPaid ? 'Paid' : 'Unpaid'),
             items: order.items?.map((item: any) => ({
                 product: {
                     _id: item.product?._id?.toString(),
