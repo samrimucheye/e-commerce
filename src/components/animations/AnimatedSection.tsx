@@ -23,15 +23,9 @@ export default function AnimatedSection({
         right: { x: -40 }
     };
 
-    const [isMounted, setIsMounted] = useState(false);
+    // Removed manual hydration check to fix mismatch
+    // Framer motion handles SSR correctly
 
-    useEffect(() => {
-        setIsMounted(true);
-    }, []);
-
-    if (!isMounted) {
-        return <div className={className}>{children}</div>;
-    }
 
     return (
         <motion.div
