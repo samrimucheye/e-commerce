@@ -24,16 +24,19 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 console.log('🔍 Attempting login for:', email);
 
                 try {
+                    console.log('🔌 Connecting to database...');
                     await dbConnect();
+
+                    console.log('Searching for user:', email);
                     const user = await User.findOne({ email }).select('+password');
 
                     if (!user) {
-                        console.log('❌ User not found:', email);
+                        console.warn('⚠️ Login failed: User not found ->', email);
                         return null;
                     }
 
                     if (!user.password) {
-                        console.log('❌ User has no password set:', email);
+                        console.warn('⚠️ Login failed: No password hash for user ->', email);
                         return null;
                     }
 
@@ -44,11 +47,15 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                         console.log('✅ Login successful for:', email);
                         return user;
                     } else {
-                        console.log('❌ Password mismatch for:', email);
+                        console.warn('⚠️ Login failed: Password mismatch for ->', email);
                         return null;
                     }
-                } catch (error) {
-                    console.error('❌ Auth error:', error);
+                } catch (error: any) {
+                    console.error('🔥 CRITICAL AUTH ERROR:', {
+                        message: error.message,
+                        stack: error.stack,
+                        email: email
+                    });
                     return null;
                 }
             },
