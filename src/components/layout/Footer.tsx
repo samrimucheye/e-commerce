@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Facebook, Twitter, Instagram, Youtube, Mail, Phone, MapPin, Send } from "lucide-react";
+import { Facebook, Instagram, Mail, Phone, MapPin, Send } from "lucide-react";
 import NewsletterForm from "./NewsletterForm";
 
 export default function Footer() {
@@ -23,13 +23,7 @@ export default function Footer() {
                                 <Facebook className="h-5 w-5" />
                             </a>
                             <a href="#" className="hover:text-indigo-400 transition-colors">
-                                <Twitter className="h-5 w-5" />
-                            </a>
-                            <a href="#" className="hover:text-indigo-400 transition-colors">
                                 <Instagram className="h-5 w-5" />
-                            </a>
-                            <a href="#" className="hover:text-indigo-400 transition-colors">
-                                <Youtube className="h-5 w-5" />
                             </a>
                         </div>
                     </div>
