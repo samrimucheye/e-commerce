@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { Facebook, Twitter, Instagram, Youtube, Mail, Phone, MapPin, Send } from "lucide-react";
+import NewsletterForm from "./NewsletterForm";
 
 export default function Footer() {
     return (
@@ -84,19 +85,7 @@ export default function Footer() {
                         <p className="text-sm text-gray-400">
                             Subscribe to receive updates, access to exclusive deals, and more.
                         </p>
-                        <form className="relative mt-4">
-                            <input
-                                type="email"
-                                placeholder="Email address"
-                                className="w-full bg-gray-800 border-none rounded-lg py-3 pl-4 pr-12 text-sm text-white focus:ring-2 focus:ring-indigo-500 transition-all outline-none"
-                            />
-                            <button
-                                type="submit"
-                                className="absolute right-1 top-1 bg-indigo-600 hover:bg-indigo-500 text-white p-2 rounded-md transition-colors"
-                            >
-                                <Send className="h-4 w-4" />
-                            </button>
-                        </form>
+                        <NewsletterForm />
                     </div>
                 </div>
 

@@ -4,6 +4,7 @@ import Product from "@/models/Product";
 import ProductCard from "@/components/product/ProductCard";
 import HeroSlider from "@/components/home/HeroSlider";
 import AnimatedSection from "@/components/animations/AnimatedSection";
+import HomeNewsletterForm from "@/components/home/HomeNewsletterForm";
 
 // Ensure model is registered
 import "@/models/Category";
@@ -151,22 +152,7 @@ export default async function Home() {
               <p className="mt-6 text-xl leading-relaxed text-slate-300 font-medium">
                 Join our premium inner circle and receive exclusive updates, early access to new collections, and a <span className="text-indigo-400 font-bold">15% welcome gift</span>.
               </p>
-              <form className="mt-12 flex max-w-md gap-x-4 mx-auto">
-                <input
-                  id="email-address"
-                  name="email"
-                  type="email"
-                  required
-                  className="min-w-0 flex-auto rounded-3xl border-0 bg-white/5 px-6 py-4 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6 placeholder:text-slate-500"
-                  placeholder="name@email.com"
-                />
-                <button
-                  type="submit"
-                  className="flex-none rounded-3xl bg-indigo-600 px-8 py-4 text-sm font-black text-white shadow-xl hover:bg-indigo-500 transition-all active:scale-95"
-                >
-                  Join Circle
-                </button>
-              </form>
+              <HomeNewsletterForm />
             </div>
           </section>
         </AnimatedSection>
