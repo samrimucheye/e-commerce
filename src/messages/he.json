@@ -46,7 +46,7 @@
         "proSupport": "תמיכה מקצועית",
         "expertAssistance": "סיוע מומחה 24/7",
         "elevateExperience": "שדרג את החוויה שלך.",
-        "joinCircle": "הצטרפו למעגל הפנימי שלנו וקבלו עדכונים בלעדיים, גישה מוקדמת לקולקציות חדשות ומתנת הצטרפות של {gift}.",
+        "joinCircle": "הצטרפו למעגל הפנימי שלנו וקבלו עדכונים בלעדיים, גישה מוקדמת לקולקציות חדשות ומתנת הצטרפות של <gift>{giftValue}</gift>.",
         "gift": "15%"
     },
     "Footer": {
@@ -71,6 +71,39 @@
         "join": "הצטרף",
         "joinCircle": "הצטרף למעגל",
         "joining": "מצטרף..."
+    },
+    "AboutPage": {
+        "title": "הסיפור שלנו",
+        "subtitle": "נוסדנו עם תשוקה לאיכות וחדשנות, אנו מספקים מצוינות מהיום הראשון.",
+        "whoWeAreTitle": "מי אנחנו",
+        "whoWeAreDesc": "אנחנו צוות של אנשי מקצוע מסורים המחויבים לספק את חווית הקנייה הטובה ביותר ללקוחותינו.",
+        "ourMissionTitle": "המשימה שלנו",
+        "ourMissionDesc": "לחולל מהפכה בדרך שבה אנשים קונים באינטרנט על ידי הצעת מוצרי פרימיום במחירים ללא תחרות.",
+        "integrityTitle": "יושרה לפני הכל",
+        "integrityDesc": "אנו מאמינים בשקיפות מוחלטת ובמקורות אתיים לכל פריט במלאי שלנו.",
+        "readyToShopTitle": "מוכנים להתחיל לקנות?",
+        "readyToShopSubtitle": "חקור את הקולקציה שנבחרה בקפידה של מוצרים באיכות גבוהה היום.",
+        "browseCollections": "דפדף בקולקציות"
+    },
+    "ContactPage": {
+        "getInTouch": "צור קשר",
+        "title": "בואו נתחיל <span>שיחה.</span>",
+        "subtitle": "בין אם יש לך שאלה ספציפית או סתם רוצה לחקור אפשרויות, צוות התמיכה המובחר שלנו מוכן לסייע לך.",
+        "emailUs": "שלחו לנו אימייל",
+        "specialists": "{count}+ מומחים מחוברים עכשיו",
+        "messageDelivered": "ההודעה נשלחה!",
+        "receiveRequest": "קיבלנו את בקשתך ונחזור אליך בהקדם.",
+        "sendAnother": "שלח הודעה נוספת",
+        "firstName": "שם פרטי",
+        "lastName": "שם משפחה",
+        "workEmail": "אימייל עבודה",
+        "messageDetails": "פרטי ההודעה",
+        "placeholderFirstName": "ישראל",
+        "placeholderLastName": "ישראלי",
+        "placeholderEmail": "israel@example.com",
+        "placeholderMessage": "מה יש לך בראש?",
+        "submitButton": "התחל שיחה",
+        "processing": "מעבד..."
     },
     "Common": {
         "loading": "טוען...",

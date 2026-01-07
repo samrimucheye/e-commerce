@@ -46,7 +46,7 @@
         "proSupport": "Pro Support",
         "expertAssistance": "Expert assistance 24/7",
         "elevateExperience": "Elevate your experience.",
-        "joinCircle": "Join our premium inner circle and receive exclusive updates, early access to new collections, and a {gift} welcome gift.",
+        "joinCircle": "Join our premium inner circle and receive exclusive updates, early access to new collections, and a <gift>{giftValue}</gift> welcome gift.",
         "gift": "15%"
     },
     "Footer": {
@@ -71,6 +71,39 @@
         "join": "Join",
         "joinCircle": "Join Circle",
         "joining": "Joining..."
+    },
+    "AboutPage": {
+        "title": "Our Story",
+        "subtitle": "Founded with a passion for quality and innovation, we've been delivering excellence since day one.",
+        "whoWeAreTitle": "Who We Are",
+        "whoWeAreDesc": "We are a team of dedicated professionals committed to providing the best shopping experience for our customers.",
+        "ourMissionTitle": "Our Mission",
+        "ourMissionDesc": "To revolutionize the way people shop online by offering premium products at unbeatable prices.",
+        "integrityTitle": "Integrity Second",
+        "integrityDesc": "We believe in absolute transparency and ethical sourcing for every item in our inventory.",
+        "readyToShopTitle": "Ready to start shopping?",
+        "readyToShopSubtitle": "Explore our curated collection of high-quality products today.",
+        "browseCollections": "Browse Collections"
+    },
+    "ContactPage": {
+        "getInTouch": "Get in touch",
+        "title": "Let's Start a <span>Conversation.</span>",
+        "subtitle": "Whether you have a specific question or just want to explore possibilities, our premium support team is ready to assist you.",
+        "emailUs": "Email us",
+        "specialists": "{count}+ Specialists online right now",
+        "messageDelivered": "Message Delivered!",
+        "receiveRequest": "We've received your request and will reach out shortly.",
+        "sendAnother": "Send Another",
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "workEmail": "Work Email",
+        "messageDetails": "Message Details",
+        "placeholderFirstName": "John",
+        "placeholderLastName": "Doe",
+        "placeholderEmail": "john@example.com",
+        "placeholderMessage": "What's on your mind?",
+        "submitButton": "Initiate Conversation",
+        "processing": "Processing..."
     },
     "Common": {
         "loading": "Loading...",
