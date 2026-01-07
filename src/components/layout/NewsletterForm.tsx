@@ -2,8 +2,10 @@
 
 import { useState } from "react";
 import { Send, CheckCircle, AlertCircle } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export default function NewsletterForm() {
+    const t = useTranslations("Newsletter");
     const [email, setEmail] = useState("");
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const [message, setMessage] = useState("");
@@ -44,7 +46,7 @@ export default function NewsletterForm() {
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Email address"
+                    placeholder={t("placeholder")}
                     required
                     disabled={status === "loading"}
                     className="w-full bg-gray-800 border-none rounded-lg py-3 pl-4 pr-12 text-sm text-white focus:ring-2 focus:ring-indigo-500 transition-all outline-none disabled:opacity-50"

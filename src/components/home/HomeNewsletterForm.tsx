@@ -2,8 +2,10 @@
 
 import { useState } from "react";
 import { CheckCircle, AlertCircle } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export default function HomeNewsletterForm() {
+    const t = useTranslations("Newsletter");
     const [email, setEmail] = useState("");
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const [message, setMessage] = useState("");
@@ -59,7 +61,7 @@ export default function HomeNewsletterForm() {
                         onChange={(e) => setEmail(e.target.value)}
                         disabled={status === "loading"}
                         className="w-full rounded-3xl border-0 bg-white/5 px-6 py-4 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6 placeholder:text-slate-500 transition-all disabled:opacity-50"
-                        placeholder="name@email.com"
+                        placeholder={t("homePlaceholder")}
                     />
                 </div>
                 <button
@@ -70,10 +72,10 @@ export default function HomeNewsletterForm() {
                     {status === "loading" ? (
                         <>
                             <div className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                            <span>Joining...</span>
+                            <span>{t("joining")}</span>
                         </>
                     ) : (
-                        "Join Circle"
+                        t("joinCircle")
                     )}
                 </button>
             </form>

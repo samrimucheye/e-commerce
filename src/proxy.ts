@@ -1,9 +1,20 @@
 import NextAuth from 'next-auth';
 import { authConfig } from './auth.config';
+import createMiddleware from 'next-intl/middleware';
+import { routing } from './navigation';
 
-export const proxy = NextAuth(authConfig).auth;
+const intlMiddleware = createMiddleware(routing);
+const { auth } = NextAuth(authConfig);
+
+export default auth((req) => {
+    return intlMiddleware(req);
+});
 
 export const config = {
-    // Matcher from previous proxy.ts ignoring helper files and static assets
-    matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
+    // Matcher that handles internationalization and authentication
+    matcher: [
+        '/',
+        '/(de|en|es|fr|ar|he|am)/:path*',
+        '/((?!api|_next|_vercel|.*\\..*).*)'
+    ]
 };

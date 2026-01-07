@@ -1,0 +1,33 @@
+{
+    "Navbar": {
+        "products": "ምርቶች",
+        "about": "ስለ እኛ",
+        "contact": "እውቂያ",
+        "searchPlaceholder": "ምርቶችን ይፈልጉ...",
+        "signIn": "ይግቡ",
+        "join": "ይመዝገቡ",
+        "welcome": "እንኳን ደህና መጡ",
+        "admin": "አስተዳዳሪ",
+        "profile": "የእኔ መገለጫ",
+        "signOut": "ይውጡ",
+        "exploreProducts": "ምርቶችን ያስሱ",
+        "ourStory": "ታሪካችን",
+        "contactSupport": "እገዛ እውቂያ",
+        "settings": "ቅንብሮች",
+        "joinNow": "አሁን ይመዝገቡ"
+    },
+    "HomePage": {
+        "heroTitle": "ለዘመናዊ ሕይወት ፕሪሚየም ቴክኖሎጂ",
+        "heroSubtitle": "የዕለት ተዕለት ተሞክሮዎን ከፍ ለማድረግ የተቀረጹ ከፍተኛ ጥራት ያላቸውን የኤሌክትሮኒክስ ዕቃዎች እና መለዋወጫዎች ስብስባችንን ያግኙ።",
+        "shopNow": "አሁን ይግዙ",
+        "featuredProducts": "ተለይተው የቀረቡ ምርቶች",
+        "viewAll": "ሁሉንም ይመልከቱ"
+    },
+    "Common": {
+        "loading": "በመጫን ላይ...",
+        "error": "ችግር ተፈጥሯል",
+        "addToCart": "ወደ ጋሪ ያስገቡ",
+        "buyNow": "አሁን ይግዙ",
+        "price": "ዋጋ"
+    }
+}

@@ -1,9 +1,10 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "@/navigation";
 import { ShoppingCart, Eye, Heart, Star, Sparkles, Flame } from "lucide-react";
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from "framer-motion";
 import { useWishlist } from "@/context/WishlistContext";
+import { useTranslations } from "next-intl";
 
 interface ProductCardProps {
     product: any;
@@ -11,6 +12,7 @@ interface ProductCardProps {
 
 export default function ProductCard({ product }: ProductCardProps) {
     const { toggleWishlist, isInWishlist } = useWishlist();
+    const t = useTranslations("Common");
     const isWishlisted = isInWishlist(product._id);
 
     const x = useMotionValue(0);
@@ -96,7 +98,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent opacity-0 sm:group-hover:opacity-100 transition-opacity duration-500 flex items-end p-4 sm:p-8">
                     <div className="flex w-full gap-2 translate-y-4 sm:group-hover:translate-y-0 transition-transform duration-500">
                         <button className="flex-1 bg-white text-slate-950 py-2.5 sm:py-3 rounded-xl sm:rounded-2xl font-bold text-xs sm:text-sm flex items-center justify-center hover:bg-indigo-50 transition-colors">
-                            <ShoppingCart className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1.5 sm:mr-2" /> Add to Cart
+                            <ShoppingCart className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1.5 sm:mr-2" /> {t("addToCart")}
                         </button>
                         <div className="p-2.5 sm:p-3 bg-white/20 backdrop-blur-md rounded-xl sm:rounded-2xl text-white">
                             <Eye className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -105,7 +107,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                 </div>
                 {/* Mobile Tap Indicator */}
                 <div className="absolute bottom-4 left-1/2 -translate-x-1/2 sm:hidden bg-white/20 backdrop-blur-md py-1 px-3 rounded-full text-[10px] text-white font-bold pointer-events-none">
-                    View Details
+                    {t("viewDetails")}
                 </div>
             </Link>
 
@@ -114,7 +116,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                     {[...Array(5)].map((_, i) => (
                         <Star key={i} className={`w-3 h-3 sm:w-3.5 sm:h-3.5 ${i < 4 ? 'text-amber-400 fill-amber-400' : 'text-slate-200 dark:text-slate-700'}`} />
                     ))}
-                    <span className="text-[9px] sm:text-[10px] font-bold text-slate-400 ml-1">(124 reviews)</span>
+                    <span className="text-[9px] sm:text-[10px] font-bold text-slate-400 ml-1">(124 {t("reviews")})</span>
                 </div>
 
                 <div className="space-y-1.5 sm:space-y-2">

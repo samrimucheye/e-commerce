@@ -1,0 +1,33 @@
+{
+    "Navbar": {
+        "products": "Produits",
+        "about": "À propos",
+        "contact": "Contact",
+        "searchPlaceholder": "Rechercher des produits...",
+        "signIn": "Se connecter",
+        "join": "S'inscrire",
+        "welcome": "Bienvenue",
+        "admin": "Admin",
+        "profile": "Mon Profil",
+        "signOut": "Déconnexion",
+        "exploreProducts": "Explorer les Produits",
+        "ourStory": "Notre Histoire",
+        "contactSupport": "Contactez l'assistance",
+        "settings": "Paramètres",
+        "joinNow": "S'inscrire Maintenant"
+    },
+    "HomePage": {
+        "heroTitle": "Technologie Premium pour la Vie Moderne",
+        "heroSubtitle": "Découvrez notre collection sélectionnée d'électronique et d'accessoires haut de gamme conçus pour améliorer votre quotidien.",
+        "shopNow": "Acheter Maintenant",
+        "featuredProducts": "Produits Phare",
+        "viewAll": "Tout Voir"
+    },
+    "Common": {
+        "loading": "Chargement...",
+        "error": "Une erreur est survenue",
+        "addToCart": "Ajouter au panier",
+        "buyNow": "Acheter maintenant",
+        "price": "Prix"
+    }
+}

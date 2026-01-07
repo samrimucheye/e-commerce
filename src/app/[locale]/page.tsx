@@ -1,4 +1,5 @@
-import Link from "next/link";
+import { Link } from "@/navigation";
+import { getTranslations } from "next-intl/server";
 import dbConnect from "@/lib/db";
 import Product from "@/models/Product";
 import ProductCard from "@/components/product/ProductCard";
@@ -41,6 +42,8 @@ async function getHomeData() {
 
 export default async function Home() {
   const { featured, newArrivals, sale } = await getHomeData();
+  const t = await getTranslations("HomePage");
+  const commonT = await getTranslations("Common");
 
   return (
     <div className="bg-white dark:bg-gray-900 overflow-hidden">
@@ -53,11 +56,11 @@ export default async function Home() {
           <section>
             <div className="flex items-center justify-between mb-10">
               <div>
-                <h2 className="text-4xl font-black tracking-tight text-gray-900 dark:text-white">Featured Selection</h2>
+                <h2 className="text-4xl font-black tracking-tight text-gray-900 dark:text-white">{t("featuredSelection")}</h2>
                 <div className="h-1.5 w-20 bg-indigo-600 mt-2 rounded-full" />
               </div>
               <Link href="/products" className="group flex items-center text-indigo-600 hover:text-indigo-500 font-bold transition-all">
-                View catalog <span className="ml-2 group-hover:translate-x-1 transition-transform" aria-hidden="true"> &rarr;</span>
+                {t("viewCatalog")} <span className="ml-2 group-hover:translate-x-1 transition-transform" aria-hidden="true"> &rarr;</span>
               </Link>
             </div>
             <div className="grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
@@ -77,7 +80,7 @@ export default async function Home() {
               <div className="w-full border-t border-gray-100 dark:border-gray-800" />
             </div>
             <div className="relative flex justify-center py-12">
-              <span className="bg-white dark:bg-gray-900 px-8 text-4xl font-black tracking-tight text-gray-900 dark:text-white">New Arrivals</span>
+              <span className="bg-white dark:bg-gray-900 px-8 text-4xl font-black tracking-tight text-gray-900 dark:text-white">{t("newArrivals")}</span>
             </div>
             <div className="grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
               {newArrivals.map((product: any, idx: number) => (
@@ -97,11 +100,11 @@ export default async function Home() {
 
             <div className="flex items-center justify-between mb-12 relative z-10">
               <div>
-                <h2 className="text-4xl font-black tracking-tight text-rose-600 dark:text-rose-400">Flash Sale</h2>
-                <p className="mt-2 text-slate-500 dark:text-slate-400 font-medium">Limited time offers. Grab them before they're gone!</p>
+                <h2 className="text-4xl font-black tracking-tight text-rose-600 dark:text-rose-400">{t("flashSale")}</h2>
+                <p className="mt-2 text-slate-500 dark:text-slate-400 font-medium">{t("saleSubtitle")}</p>
               </div>
               <Link href="/products" className="group flex items-center text-rose-600 hover:text-rose-500 font-bold transition-all">
-                Shop all deals <span className="ml-2 group-hover:translate-x-1 transition-transform" aria-hidden="true"> &rarr;</span>
+                {t("shopAllDeals")} <span className="ml-2 group-hover:translate-x-1 transition-transform" aria-hidden="true"> &rarr;</span>
               </Link>
             </div>
             <div className="grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-4 relative z-10">
@@ -113,7 +116,7 @@ export default async function Home() {
                 ))
               ) : (
                 <div className="col-span-full py-12 text-center text-slate-400 font-medium italic">
-                  New deals coming soon. Stay tuned!
+                  {t("noDeals")}
                 </div>
               )}
             </div>
@@ -123,10 +126,10 @@ export default async function Home() {
         {/* Global Features Trust Bar */}
         <section className="grid grid-cols-1 gap-y-12 sm:grid-cols-2 sm:gap-x-12 lg:grid-cols-4 lg:gap-x-8 border-t border-slate-100 dark:border-slate-800 pt-24 pb-12">
           {[
-            { name: 'Free Shipping', description: 'Global delivery on all orders', icon: '🚚' },
-            { name: 'Pure Protection', description: '30-day premium guarantee', icon: '🛡️' },
-            { name: 'Secure Flow', description: 'End-to-end encrypted checkout', icon: '🔒' },
-            { name: 'Pro Support', description: 'Expert assistance 24/7', icon: '🎧' },
+            { name: t('freeShipping'), description: t('globalDelivery'), icon: '🚚' },
+            { name: t('pureProtection'), description: t('guarantee'), icon: '🛡️' },
+            { name: t('secureFlow'), description: t('encrypted'), icon: '🔒' },
+            { name: t('proSupport'), description: t('expertAssistance'), icon: '🎧' },
           ].map((feature, idx) => (
             <AnimatedSection key={feature.name} delay={idx * 0.15} direction="up">
               <div className="group flex flex-col items-center text-center p-8 rounded-[2rem] hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
@@ -148,9 +151,12 @@ export default async function Home() {
             </div>
 
             <div className="mx-auto max-w-2xl text-center">
-              <h2 className="text-4xl font-black tracking-tight text-white sm:text-6xl">Elevate your experience.</h2>
+              <h2 className="text-4xl font-black tracking-tight text-white sm:text-6xl">{t("elevateExperience")}</h2>
               <p className="mt-6 text-xl leading-relaxed text-slate-300 font-medium">
-                Join our premium inner circle and receive exclusive updates, early access to new collections, and a <span className="text-indigo-400 font-bold">15% welcome gift</span>.
+                {t.rich("joinCircle", {
+                  gift: (chunks) => <span className="text-indigo-400 font-bold">{chunks}</span>,
+                  giftValue: t("gift")
+                })}
               </p>
               <HomeNewsletterForm />
             </div>

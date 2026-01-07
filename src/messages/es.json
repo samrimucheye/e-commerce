@@ -1,0 +1,33 @@
+{
+    "Navbar": {
+        "products": "Productos",
+        "about": "Nosotros",
+        "contact": "Contacto",
+        "searchPlaceholder": "Buscar productos...",
+        "signIn": "Iniciar sesión",
+        "join": "Unirse",
+        "welcome": "Bienvenido",
+        "admin": "Admin",
+        "profile": "Mi Perfil",
+        "signOut": "Cerrar sesión",
+        "exploreProducts": "Explorar Productos",
+        "ourStory": "Nuestra Historia",
+        "contactSupport": "Soporte de Contacto",
+        "settings": "Ajustes",
+        "joinNow": "Únete Ahora"
+    },
+    "HomePage": {
+        "heroTitle": "Tecnología Premium para la Vida Moderna",
+        "heroSubtitle": "Descubra nuestra colección curada de electrónica y accesorios de alta gama diseñados para elevar su experiencia diaria.",
+        "shopNow": "Comprar Ahora",
+        "featuredProducts": "Productos Destacados",
+        "viewAll": "Ver Todo"
+    },
+    "Common": {
+        "loading": "Cargando...",
+        "error": "Algo salió mal",
+        "addToCart": "Añadir al carrito",
+        "buyNow": "Comprar ahora",
+        "price": "Precio"
+    }
+}

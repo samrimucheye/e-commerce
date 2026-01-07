@@ -1,41 +1,45 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import Link from "next/link";
+import { Link } from "@/navigation";
 import { ChevronLeft, ChevronRight, Sparkles } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTranslations } from "next-intl";
 
-const slides = [
-    {
-        image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=1600&h=800&auto=format&fit=crop",
-        title: "Modern Collections",
-        subtitle: "DESIGNED FOR YOUR LIFESTYLE",
-        description: "Discover our latest arrivals of premium quality products designed for your lifestyle.",
-        cta: "Shop New Arrivals",
-        link: "/products",
-        color: "indigo"
-    },
-    {
-        image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=1600&h=800&auto=format&fit=crop",
-        title: "Tech Innovation",
-        subtitle: "SMART SOLUTIONS FOR THE FUTURE",
-        description: "Stay ahead with the latest gadgets and electronics at unbeatable prices.",
-        cta: "Explore Tech",
-        link: "/products",
-        color: "rose"
-    },
-    {
-        image: "https://images.unsplash.com/photo-1449247701024-2c11438f2f63?q=80&w=1600&h=800&auto=format&fit=crop",
-        title: "Home Essentials",
-        subtitle: "TRANSFORM YOUR SPACE",
-        description: "Transform your living space with our curated home and lifestyle essentials.",
-        cta: "Browse Home",
-        link: "/products",
-        color: "emerald"
-    }
-];
 
 export default function HeroSlider() {
+    const t = useTranslations("HomePage");
+
+    const slides = [
+        {
+            image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=1600&h=800&auto=format&fit=crop",
+            title: t("heroTitle1"),
+            subtitle: t("heroSubtitle1"),
+            description: t("heroDesc1"),
+            cta: t("heroCta1"),
+            link: "/products",
+            color: "indigo"
+        },
+        {
+            image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=1600&h=800&auto=format&fit=crop",
+            title: t("heroTitle2"),
+            subtitle: t("heroSubtitle2"),
+            description: t("heroDesc2"),
+            cta: t("heroCta2"),
+            link: "/products",
+            color: "rose"
+        },
+        {
+            image: "https://images.unsplash.com/photo-1449247701024-2c11438f2f63?q=80&w=1600&h=800&auto=format&fit=crop",
+            title: t("heroTitle3"),
+            subtitle: t("heroSubtitle3"),
+            description: t("heroDesc3"),
+            cta: t("heroCta3"),
+            link: "/products",
+            color: "emerald"
+        }
+    ];
+
     const [current, setCurrent] = useState(0);
     const [direction, setDirection] = useState(0);
 
