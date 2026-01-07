@@ -3,6 +3,7 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { ChevronDown, Check } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
+import { useTranslations } from "next-intl";
 
 interface Category {
     _id: string;
@@ -17,6 +18,7 @@ interface CategoryFilterProps {
 export default function CategoryFilter({ categories }: CategoryFilterProps) {
     const router = useRouter();
     const searchParams = useSearchParams();
+    const t = useTranslations("Common");
     const currentCategory = searchParams.get("category");
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
@@ -37,7 +39,7 @@ export default function CategoryFilter({ categories }: CategoryFilterProps) {
 
     const selectedCategoryName = currentCategory
         ? categories.find(c => c._id === currentCategory)?.name
-        : "All Categories";
+        : t("allCategories");
 
     // Close on click outside
     useEffect(() => {
@@ -71,7 +73,7 @@ export default function CategoryFilter({ categories }: CategoryFilterProps) {
                             className="w-full text-left flex items-center justify-between px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
                             role="menuitem"
                         >
-                            <span>All Categories</span>
+                            <span>{t("allCategories")}</span>
                             {!currentCategory && <Check className="h-4 w-4 text-indigo-600" />}
                         </button>
                         {categories.map((category) => (

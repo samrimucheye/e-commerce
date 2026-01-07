@@ -4,12 +4,14 @@ import { useState } from "react";
 import { Link, useRouter } from "@/navigation";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
+import { useTranslations } from "next-intl";
 import { Mail, Lock, Loader2, ArrowRight, User, LogIn, Sparkles } from "lucide-react";
 
 function RegisterForm() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const callbackUrl = searchParams.get("callbackUrl") || "/";
+    const t = useTranslations("Auth.register");
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
 
@@ -35,10 +37,10 @@ function RegisterForm() {
                 router.push(loginRedirect);
             } else {
                 const data = await res.json();
-                setError(data.message || "Something went wrong");
+                setError(data.message || t("errorGeneric"));
             }
         } catch (err) {
-            setError("An error occurred. Please try again.");
+            setError(t("errorNetwork"));
         } finally {
             setLoading(false);
         }
@@ -51,10 +53,10 @@ function RegisterForm() {
                     <Sparkles className="w-8 h-8 text-white" />
                 </div>
                 <h2 className="text-3xl font-extrabold tracking-tight text-white">
-                    Create Account
+                    {t("title")}
                 </h2>
                 <p className="mt-2 text-indigo-200/60 font-medium">
-                    Start your shopping journey with us
+                    {t("subtitle")}
                 </p>
             </div>
 
@@ -68,7 +70,7 @@ function RegisterForm() {
                             type="text"
                             required
                             className="block w-full pl-12 pr-4 py-3.5 bg-white/5 border border-white/10 rounded-2xl focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none transition-all placeholder:text-white/20 text-white"
-                            placeholder="Full Name"
+                            placeholder={t("name")}
                         />
                     </div>
                     <div className="relative group text-white">
@@ -79,7 +81,7 @@ function RegisterForm() {
                             type="email"
                             required
                             className="block w-full pl-12 pr-4 py-3.5 bg-white/5 border border-white/10 rounded-2xl focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none transition-all placeholder:text-white/20 text-white"
-                            placeholder="Email address"
+                            placeholder={t("email")}
                         />
                     </div>
                     <div className="relative group text-white">
@@ -90,7 +92,7 @@ function RegisterForm() {
                             type="password"
                             required
                             className="block w-full pl-12 pr-4 py-3.5 bg-white/5 border border-white/10 rounded-2xl focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none transition-all placeholder:text-white/20 text-white"
-                            placeholder="Password"
+                            placeholder={t("password")}
                         />
                     </div>
                 </div>
@@ -110,7 +112,7 @@ function RegisterForm() {
                         <Loader2 className="w-5 h-5 animate-spin" />
                     ) : (
                         <>
-                            Sign Up
+                            {t("signUp")}
                             <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                         </>
                     )}
@@ -122,7 +124,7 @@ function RegisterForm() {
                         className="inline-flex items-center text-sm font-semibold text-indigo-300 hover:text-white transition-colors"
                     >
                         <LogIn className="w-4 h-4 mr-2" />
-                        Already have an account? Sign In
+                        {t("alreadyHaveAccount")}
                     </Link>
                 </div>
             </form>
@@ -131,8 +133,9 @@ function RegisterForm() {
 }
 
 export default function RegisterPage() {
+    const t = useTranslations("Auth.register");
     return (
-        <Suspense fallback={<div className="text-white">Loading...</div>}>
+        <Suspense fallback={<div className="text-white">{t("loading")}</div>}>
             <RegisterForm />
         </Suspense>
     );

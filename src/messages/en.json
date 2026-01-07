@@ -105,13 +105,54 @@
         "submitButton": "Initiate Conversation",
         "processing": "Processing..."
     },
+    "ProductsPage": {
+        "title": "Our Collection",
+        "productsFound": "{count} products found",
+        "noProductsFound": "No products found",
+        "noProductsDesc": "We couldn't find anything matching your filters. Try adjusting your search or category."
+    },
+    "SortOptions": {
+        "newest": "Newest",
+        "priceAsc": "Price: Low to High",
+        "priceDesc": "Price: High to Low"
+    },
     "Common": {
         "loading": "Loading...",
         "error": "Something went wrong",
         "addToCart": "Add to Cart",
         "buyNow": "Buy Now",
         "viewDetails": "View Details",
-        "reviews": "reviews",
-        "price": "Price"
+        "reviews": "Reviews",
+        "price": "Price",
+        "category": "Category",
+        "sortBy": "Sort by",
+        "allCategories": "All Categories",
+        "new": "NEW",
+        "sale": "SALE"
+    },
+    "Auth": {
+        "login": {
+            "title": "Welcome Back",
+            "subtitle": "Please sign in to your accounts",
+            "email": "Email address",
+            "password": "Password",
+            "signIn": "Sign In",
+            "loading": "Loading...",
+            "newHere": "New here? Create an account",
+            "error": "Invalid email or password",
+            "success": "Account created successfully! Please sign in."
+        },
+        "register": {
+            "title": "Create Account",
+            "subtitle": "Start your shopping journey with us",
+            "name": "Full Name",
+            "email": "Email address",
+            "password": "Password",
+            "signUp": "Sign Up",
+            "loading": "Loading...",
+            "alreadyHaveAccount": "Already have an account? Sign In",
+            "errorGeneric": "Something went wrong",
+            "errorNetwork": "An error occurred. Please try again."
+        }
     }
 }

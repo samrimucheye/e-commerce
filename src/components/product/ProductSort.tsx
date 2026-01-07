@@ -2,17 +2,20 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { ChevronDown } from "lucide-react";
-
-const sortOptions = [
-    { name: "Newest", value: "newest" },
-    { name: "Price: Low to High", value: "price-asc" },
-    { name: "Price: High to Low", value: "price-desc" },
-];
+import { useTranslations } from "next-intl";
 
 export default function ProductSort() {
     const router = useRouter();
     const searchParams = useSearchParams();
+    const t = useTranslations("SortOptions");
+    const tCommon = useTranslations("Common");
     const currentSort = searchParams.get("sort") || "newest";
+
+    const sortOptions = [
+        { name: t("newest"), value: "newest" },
+        { name: t("priceAsc"), value: "price-asc" },
+        { name: t("priceDesc"), value: "price-desc" },
+    ];
 
     const handleSortChange = (value: string) => {
         const params = new URLSearchParams(searchParams.toString());
@@ -23,7 +26,7 @@ export default function ProductSort() {
     return (
         <div className="relative inline-block text-left">
             <div className="group">
-                <label htmlFor="sort-select" className="sr-only">Sort by</label>
+                <label htmlFor="sort-select" className="sr-only">{tCommon("sortBy")}</label>
                 <div className="relative">
                     <select
                         id="sort-select"

@@ -105,6 +105,17 @@
         "submitButton": "התחל שיחה",
         "processing": "מעבד..."
     },
+    "ProductsPage": {
+        "title": "הקולקציה שלנו",
+        "productsFound": "נמצאו {count} מוצרים",
+        "noProductsFound": "לא נמצאו מוצרים",
+        "noProductsDesc": "לא מצאנו שום דבר שמתאים למסננים שלך. נסה להתאים את החיפוש או הקטגוריה."
+    },
+    "SortOptions": {
+        "newest": "הכי חדש",
+        "priceAsc": "מחיר: מהנמוך לגבוה",
+        "priceDesc": "מחיר: מהגבוה לנמוך"
+    },
     "Common": {
         "loading": "טוען...",
         "error": "משהו השתבש",
@@ -112,6 +123,36 @@
         "buyNow": "קנה עכשיו",
         "viewDetails": "צפה בפרטים",
         "reviews": "ביקורות",
-        "price": "מחיר"
+        "price": "מחיר",
+        "category": "קטגוריה",
+        "sortBy": "מיין לפי",
+        "allCategories": "כל הקטגוריות",
+        "new": "חדש",
+        "sale": "מבצע"
+    },
+    "Auth": {
+        "login": {
+            "title": "ברוכים השבים",
+            "subtitle": "אנא היכנס לחשבונך",
+            "email": "כתובת אימייל",
+            "password": "סיסמה",
+            "signIn": "התחברות",
+            "loading": "טוען...",
+            "newHere": "חדש כאן? צור חשבון",
+            "error": "אימייל או סיסמה לא חוקיים",
+            "success": "החשבון נוצר בהצלחה! אנא התחבר."
+        },
+        "register": {
+            "title": "יצירת חשבון",
+            "subtitle": "התחל את מסע הקניות שלך איתנו",
+            "name": "שם מלא",
+            "email": "כתובת אימייל",
+            "password": "סיסמה",
+            "signUp": "הרשמה",
+            "loading": "טוען...",
+            "alreadyHaveAccount": "כבר יש לך חשבון? התחברות",
+            "errorGeneric": "משהו השתבש",
+            "errorNetwork": "אירעה שגיאה. אנא נסה שוב."
+        }
     }
 }

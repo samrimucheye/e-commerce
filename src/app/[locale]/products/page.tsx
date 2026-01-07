@@ -5,6 +5,7 @@ import Category from "@/models/Category";
 import ProductCard from "@/components/product/ProductCard";
 import CategoryFilter from "@/components/product/CategoryFilter";
 import ProductSort from "@/components/product/ProductSort";
+import { getTranslations } from "next-intl/server";
 
 async function getProducts({ search, category, sort }: { search?: string, category?: string, sort?: string }) {
     try {
@@ -56,13 +57,15 @@ export default async function ProductsPage({
     const filters = await searchParams;
 
     // Fetch data in parallel
-    const [products, categories] = await Promise.all([
+    const [products, categories, t, tCommon] = await Promise.all([
         getProducts({
             search: filters.search,
             category: filters.category,
             sort: filters.sort
         }),
-        getCategories()
+        getCategories(),
+        getTranslations("ProductsPage"),
+        getTranslations("Common")
     ]);
 
     return (
@@ -70,18 +73,18 @@ export default async function ProductsPage({
             <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between border-b border-gray-100 dark:border-gray-800 pb-8 mb-8">
                     <div>
-                        <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white">Our Collection</h1>
+                        <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white">{t("title")}</h1>
                         <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                            {products.length} products found
+                            {t("productsFound", { count: products.length })}
                         </p>
                     </div>
                     <div className="mt-4 md:mt-0 flex flex-col sm:flex-row items-center gap-4">
                         <div className="flex items-center space-x-2">
-                            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Category:</span>
+                            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{tCommon("category")}:</span>
                             <CategoryFilter categories={categories} />
                         </div>
                         <div className="flex items-center space-x-2">
-                            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Sort by:</span>
+                            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{tCommon("sortBy")}:</span>
                             <ProductSort />
                         </div>
                     </div>
@@ -95,9 +98,9 @@ export default async function ProductsPage({
                     ) : (
                         <div className="col-span-full text-center py-20 bg-gray-50 dark:bg-gray-800/50 rounded-3xl">
                             <div className="mx-auto max-w-xs">
-                                <p className="text-lg font-semibold text-gray-900 dark:text-white">No products found</p>
+                                <p className="text-lg font-semibold text-gray-900 dark:text-white">{t("noProductsFound")}</p>
                                 <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                                    We couldn't find anything matching your filters. Try adjusting your search or category.
+                                    {t("noProductsDesc")}
                                 </p>
                             </div>
                         </div>

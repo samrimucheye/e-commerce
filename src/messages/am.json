@@ -105,6 +105,17 @@
         "submitButton": "ውይይት ይጀምሩ",
         "processing": "በማካሄድ ላይ..."
     },
+    "ProductsPage": {
+        "title": "የእኛ ስብስብ",
+        "productsFound": "{count} ምርቶች ተገኝተዋል",
+        "noProductsFound": "ምንም ምርቶች አልተገኙም",
+        "noProductsDesc": "ከእርስዎ ማጣሪያዎች ጋር የሚዛመድ ምንም ነገር ማግኘት አልቻልንም። ፍለጋዎን ወይም ምድብዎን ለማስተካከል ይሞክሩ።"
+    },
+    "SortOptions": {
+        "newest": "አዲስ",
+        "priceAsc": "ዋጋ: ከዝቅተኛ ወደ ከፍተኛ",
+        "priceDesc": "ዋጋ: ከከፍተኛ ወደ ዝቅተኛ"
+    },
     "Common": {
         "loading": "በመጫን ላይ...",
         "error": "ችግር ተፈጥሯል",
@@ -112,6 +123,36 @@
         "buyNow": "አሁን ይግዙ",
         "viewDetails": "ዝርዝር ሁኔታ ይመልከቱ",
         "reviews": "ግምገማዎች",
-        "price": "ዋጋ"
+        "price": "ዋጋ",
+        "category": "ምድብ",
+        "sortBy": "ተደርድር",
+        "allCategories": "ሁሉም ምድቦች",
+        "new": "አዲስ",
+        "sale": "ቅናሽ"
+    },
+    "Auth": {
+        "login": {
+            "title": "እንኳን ደህና መጡ",
+            "subtitle": "እባክዎን ወደ መለያዎ ይግቡ",
+            "email": "የኢሜል አድራሻ",
+            "password": "የይለፍ ቃል",
+            "signIn": "ግባ",
+            "loading": "በመጫን ላይ...",
+            "newHere": "እዚህ አዲስ ነዎት? መለያ ይፍጠሩ",
+            "error": "ልክ ያልሆነ ኢሜይል ወይም የይለፍ ቃል",
+            "success": "መለያ በተሳካ ሁኔታ ተፈጥሯል! እባክዎን ይግቡ።"
+        },
+        "register": {
+            "title": "መለያ ፍጠር",
+            "subtitle": "የግዢ ጉዞዎን ከእኛ ጋር ይጀምሩ",
+            "name": "ሙሉ ስም",
+            "email": "የኢሜል አድራሻ",
+            "password": "የይለፍ ቃል",
+            "signUp": "ተመዝገብ",
+            "loading": "በመጫን ላይ...",
+            "alreadyHaveAccount": "አስቀድመው መለያ አለዎት? ግባ",
+            "errorGeneric": "የሆነ ችግር ተከስቷል",
+            "errorNetwork": "ስህተት ተከስቷል። እባክዎ እንደገና ይሞክሩ።"
+        }
     }
 }

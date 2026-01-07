@@ -5,6 +5,7 @@ import { signIn } from "next-auth/react";
 import { Link, useRouter } from "@/navigation";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
+import { useTranslations } from "next-intl";
 import { Mail, Lock, Loader2, ArrowRight, UserPlus, ShieldCheck } from "lucide-react";
 
 function LoginForm() {
@@ -12,6 +13,7 @@ function LoginForm() {
     const searchParams = useSearchParams();
     const callbackUrl = searchParams.get("callbackUrl") || "/";
     const registered = searchParams.get("registered") === "true";
+    const t = useTranslations("Auth.login");
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
 
@@ -33,7 +35,7 @@ function LoginForm() {
         setLoading(false);
 
         if (res?.error) {
-            setError("Invalid email or password");
+            setError(t("error"));
         } else {
             router.push(callbackUrl);
             router.refresh();
@@ -47,16 +49,16 @@ function LoginForm() {
                     <ShieldCheck className="w-8 h-8 text-white" />
                 </div>
                 <h2 className="text-3xl font-extrabold tracking-tight text-white">
-                    Welcome Back
+                    {t("title")}
                 </h2>
                 <p className="mt-2 text-indigo-200/60 font-medium">
-                    Please sign in to your accounts
+                    {t("subtitle")}
                 </p>
             </div>
 
             {registered && (
                 <div className="p-4 bg-emerald-500/10 border border-emerald-500/20 rounded-2xl text-emerald-400 text-sm font-medium text-center">
-                    Account created successfully! Please sign in.
+                    {t("success")}
                 </div>
             )}
 
@@ -70,7 +72,7 @@ function LoginForm() {
                             type="email"
                             required
                             className="block w-full pl-12 pr-4 py-3.5 bg-white/5 border border-white/10 rounded-2xl focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none transition-all placeholder:text-white/20 text-white"
-                            placeholder="Email address"
+                            placeholder={t("email")}
                         />
                     </div>
                     <div className="relative group text-white">
@@ -81,7 +83,7 @@ function LoginForm() {
                             type="password"
                             required
                             className="block w-full pl-12 pr-4 py-3.5 bg-white/5 border border-white/10 rounded-2xl focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none transition-all placeholder:text-white/20 text-white"
-                            placeholder="Password"
+                            placeholder={t("password")}
                         />
                     </div>
                 </div>
@@ -101,7 +103,7 @@ function LoginForm() {
                         <Loader2 className="w-5 h-5 animate-spin" />
                     ) : (
                         <>
-                            Sign In
+                            {t("signIn")}
                             <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                         </>
                     )}
@@ -113,7 +115,7 @@ function LoginForm() {
                         className="inline-flex items-center text-sm font-semibold text-indigo-300 hover:text-white transition-colors"
                     >
                         <UserPlus className="w-4 h-4 mr-2" />
-                        New here? Create an account
+                        {t("newHere")}
                     </Link>
                 </div>
             </form>
@@ -122,8 +124,9 @@ function LoginForm() {
 }
 
 export default function LoginPage() {
+    const t = useTranslations("Auth.login");
     return (
-        <Suspense fallback={<div className="text-white">Loading...</div>}>
+        <Suspense fallback={<div className="text-white">{t("loading")}</div>}>
             <LoginForm />
         </Suspense>
     );

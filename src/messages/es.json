@@ -105,6 +105,17 @@
         "submitButton": "Iniciar conversación",
         "processing": "Procesando..."
     },
+    "ProductsPage": {
+        "title": "Nuestra Colección",
+        "productsFound": "{count} productos encontrados",
+        "noProductsFound": "No se encontraron productos",
+        "noProductsDesc": "No pudimos encontrar nada que coincida con tus filtros. Intenta ajustar tu búsqueda o categoría."
+    },
+    "SortOptions": {
+        "newest": "Más reciente",
+        "priceAsc": "Precio: Menor a Mayor",
+        "priceDesc": "Precio: Mayor a Menor"
+    },
     "Common": {
         "loading": "Cargando...",
         "error": "Algo salió mal",
@@ -112,6 +123,36 @@
         "buyNow": "Comprar ahora",
         "viewDetails": "Ver detalles",
         "reviews": "Reseñas",
-        "price": "Precio"
+        "price": "Precio",
+        "category": "Categoría",
+        "sortBy": "Ordenar por",
+        "allCategories": "Todas las categorías",
+        "new": "NUEVO",
+        "sale": "OFERTA"
+    },
+    "Auth": {
+        "login": {
+            "title": "Bienvenido de nuevo",
+            "subtitle": "Por favor, inicie sesión en su cuenta",
+            "email": "Correo electrónico",
+            "password": "Contraseña",
+            "signIn": "Iniciar sesión",
+            "loading": "Cargando...",
+            "newHere": "¿Nuevo aquí? Crea una cuenta",
+            "error": "Correo electrónico o contraseña no válidos",
+            "success": "¡Cuenta creada con éxito! Por favor, inicie sesión."
+        },
+        "register": {
+            "title": "Crear cuenta",
+            "subtitle": "Comienza tu viaje de compras con nosotros",
+            "name": "Nombre completo",
+            "email": "Correo electrónico",
+            "password": "Contraseña",
+            "signUp": "Registrarse",
+            "loading": "Cargando...",
+            "alreadyHaveAccount": "¿Ya tienes una cuenta? Iniciar sesión",
+            "errorGeneric": "Algo salió mal",
+            "errorNetwork": "Ocurrió un error. Por favor, inténtelo de nuevo."
+        }
     }
 }

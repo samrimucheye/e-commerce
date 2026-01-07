@@ -105,6 +105,17 @@
         "submitButton": "Gespräch einleiten",
         "processing": "Verarbeitung..."
     },
+    "ProductsPage": {
+        "title": "Unsere Kollektion",
+        "productsFound": "{count} Produkte gefunden",
+        "noProductsFound": "Keine Produkte gefunden",
+        "noProductsDesc": "Wir konnten nichts finden, was Ihren Filtern entspricht. Versuchen Sie, Ihre Suche oder Kategorie anzupassen."
+    },
+    "SortOptions": {
+        "newest": "Neueste",
+        "priceAsc": "Preis: Niedrig bis Hoch",
+        "priceDesc": "Preis: Hoch bis Niedrig"
+    },
     "Common": {
         "loading": "Laden...",
         "error": "Etwas ist schief gelaufen",
@@ -112,6 +123,36 @@
         "buyNow": "Jetzt kaufen",
         "viewDetails": "Details anzeigen",
         "reviews": "Bewertungen",
-        "price": "Preis"
+        "price": "Preis",
+        "category": "Kategorie",
+        "sortBy": "Sortieren nach",
+        "allCategories": "Alle Kategorien",
+        "new": "NEU",
+        "sale": "SALE"
+    },
+    "Auth": {
+        "login": {
+            "title": "Willkommen zurück",
+            "subtitle": "Bitte melden Sie sich bei Ihrem Konto an",
+            "email": "E-Mail-Adresse",
+            "password": "Passwort",
+            "signIn": "Anmelden",
+            "loading": "Wird geladen...",
+            "newHere": "Neu hier? Konto erstellen",
+            "error": "Ungültige E-Mail oder Passwort",
+            "success": "Konto erfolgreich erstellt! Bitte anmelden."
+        },
+        "register": {
+            "title": "Konto erstellen",
+            "subtitle": "Beginnen Sie Ihre Shopping-Reise bei uns",
+            "name": "Vollständiger Name",
+            "email": "E-Mail-Adresse",
+            "password": "Passwort",
+            "signUp": "Registrieren",
+            "loading": "Wird geladen...",
+            "alreadyHaveAccount": "Haben Sie bereits ein Konto? Anmelden",
+            "errorGeneric": "Etwas ist schief gelaufen",
+            "errorNetwork": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut."
+        }
     }
 }

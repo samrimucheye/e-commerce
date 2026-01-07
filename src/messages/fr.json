@@ -105,6 +105,17 @@
         "submitButton": "Démarrer la conversation",
         "processing": "Traitement..."
     },
+    "ProductsPage": {
+        "title": "Notre Collection",
+        "productsFound": "{count} produits trouvés",
+        "noProductsFound": "Aucun produit trouvé",
+        "noProductsDesc": "Nous n'avons rien trouvé correspondant à vos filtres. Essayez d'ajuster votre recherche ou votre catégorie."
+    },
+    "SortOptions": {
+        "newest": "Le plus récent",
+        "priceAsc": "Prix : Croissant",
+        "priceDesc": "Prix : Décroissant"
+    },
     "Common": {
         "loading": "Chargement...",
         "error": "Une erreur est survenue",
@@ -112,6 +123,36 @@
         "buyNow": "Acheter maintenant",
         "viewDetails": "Voir les détails",
         "reviews": "Avis",
-        "price": "Prix"
+        "price": "Prix",
+        "category": "Catégorie",
+        "sortBy": "Trier par",
+        "allCategories": "Toutes les catégories",
+        "new": "NOUVEAU",
+        "sale": "PROMO"
+    },
+    "Auth": {
+        "login": {
+            "title": "Bon retour",
+            "subtitle": "Veuillez vous connecter à votre compte",
+            "email": "Adresse e-mail",
+            "password": "Mot de passe",
+            "signIn": "Se connecter",
+            "loading": "Chargement...",
+            "newHere": "Nouveau ici ? Créer un compte",
+            "error": "E-mail ou mot de passe invalide",
+            "success": "Compte créé avec succès ! Veuillez vous connecter."
+        },
+        "register": {
+            "title": "Créer un compte",
+            "subtitle": "Commencez votre voyage shopping avec nous",
+            "name": "Nom complet",
+            "email": "Adresse e-mail",
+            "password": "Mot de passe",
+            "signUp": "S'inscrire",
+            "loading": "Chargement...",
+            "alreadyHaveAccount": "Vous avez déjà un compte ? Se connecter",
+            "errorGeneric": "Quelque chose s'est mal passé",
+            "errorNetwork": "Une erreur est survenue. Veuillez réessayer."
+        }
     }
 }

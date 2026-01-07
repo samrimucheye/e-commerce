@@ -60,12 +60,12 @@ export default function ProductCard({ product }: ProductCardProps) {
             <div className="absolute top-4 left-4 sm:top-5 sm:left-5 z-20 flex flex-col gap-2" style={{ transform: "translateZ(50px)" }}>
                 {product.isNewArrival && (
                     <div className="bg-emerald-500 text-white text-[9px] sm:text-[10px] font-black px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-lg sm:rounded-xl flex items-center shadow-lg shadow-emerald-500/20 backdrop-blur-md">
-                        <Sparkles className="w-2.5 h-2.5 sm:w-3 sm:h-3 mr-1" /> NEW
+                        <Sparkles className="w-2.5 h-2.5 sm:w-3 sm:h-3 mr-1" /> {t("new")}
                     </div>
                 )}
                 {product.isOnSale && (
                     <div className="bg-rose-500 text-white text-[9px] sm:text-[10px] font-black px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-lg sm:rounded-xl flex items-center shadow-lg shadow-rose-500/20 backdrop-blur-md">
-                        <Flame className="w-2.5 h-2.5 sm:w-3 sm:h-3 mr-1" /> SALE
+                        <Flame className="w-2.5 h-2.5 sm:w-3 sm:h-3 mr-1" /> {t("sale")}
                     </div>
                 )}
             </div>
