@@ -359,14 +359,14 @@ export default function Navbar() {
                                     onClick={() => setIsMenuOpen(false)}
                                     className="flex items-center justify-center py-3 text-sm font-bold border border-gray-200 dark:border-gray-700 rounded-xl text-gray-600 dark:text-gray-400"
                                 >
-                                    Sign In
+                                    {t("signIn")}
                                 </Link>
                                 <Link
                                     href="/register"
                                     onClick={() => setIsMenuOpen(false)}
                                     className="flex items-center justify-center py-3 text-sm font-bold bg-indigo-600 text-white rounded-xl shadow-lg shadow-indigo-200 dark:shadow-none"
                                 >
-                                    Join Now
+                                    {t("joinNow")}
                                 </Link>
                             </div>
                         )}
