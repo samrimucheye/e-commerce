@@ -7,14 +7,25 @@ const intlMiddleware = createMiddleware(routing);
 const { auth } = NextAuth(authConfig);
 
 export default auth((req) => {
+    // Skip internationalization for API routes, auth routes, and static files
+    const pathname = req.nextUrl.pathname;
+    if (
+        pathname.startsWith('/api') ||
+        pathname.startsWith('/_next') ||
+        pathname.includes('.')
+    ) {
+        return;
+    }
+
+    // Apply internationalization middleware for page routes
     return intlMiddleware(req);
 });
 
 export const config = {
     // Matcher that handles internationalization and authentication
+    // Excludes: _next/static, _next/image, favicon.ico, and other static files
+    // Includes: all pages (with locale prefixes) and API routes
     matcher: [
-        '/',
-        '/(de|en|es|fr|ar|he|am)/:path*',
-        '/((?!api|_next|_vercel|.*\\..*).*)'
+        '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)'
     ]
 };

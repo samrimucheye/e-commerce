@@ -12,7 +12,12 @@ export const authConfig = {
         authorized({ auth, request: { nextUrl } }) {
             const isLoggedIn = !!auth?.user;
 
-            if (nextUrl.pathname.startsWith("/admin")) {
+            // Remove locale prefix to check actual route
+            const pathname = nextUrl.pathname;
+            const pathWithoutLocale = pathname.replace(/^\/(en|es|fr|de|ar|he|am)/, '');
+
+            // Check if accessing admin routes (with or without locale prefix)
+            if (pathWithoutLocale.startsWith("/admin")) {
                 if (!isLoggedIn) {
                     return Response.redirect(new URL("/login", nextUrl));
                 }
@@ -23,8 +28,8 @@ export const authConfig = {
 
             if (
                 isLoggedIn &&
-                (nextUrl.pathname === "/login" ||
-                    nextUrl.pathname === "/register")
+                (pathWithoutLocale === "/login" ||
+                    pathWithoutLocale === "/register")
             ) {
                 return Response.redirect(new URL("/", nextUrl));
             }

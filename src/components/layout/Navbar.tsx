@@ -216,7 +216,7 @@ export default function Navbar() {
                                     <User className="h-5 w-5" />
                                 </Link>
                                 <button
-                                    onClick={() => signOut()}
+                                    onClick={() => signOut({ callbackUrl: '/' })}
                                     className="p-2 text-gray-500 hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-900/20 rounded-full transition-colors"
                                     title={t("signOut")}
                                 >
@@ -346,7 +346,7 @@ export default function Navbar() {
                                     )}
                                 </div>
                                 <button
-                                    onClick={() => signOut()}
+                                    onClick={() => signOut({ callbackUrl: '/' })}
                                     className="block w-full py-3 px-4 text-center text-sm font-bold text-red-600 border border-red-100 dark:border-red-900/30 rounded-xl"
                                 >
                                     Sign Out
