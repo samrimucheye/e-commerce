@@ -26,6 +26,15 @@ export const authConfig = {
                 }
             }
 
+            // Check if accessing checkout (require authentication)
+            if (pathWithoutLocale.startsWith("/checkout")) {
+                if (!isLoggedIn) {
+                    const loginUrl = new URL("/login", nextUrl);
+                    loginUrl.searchParams.set("callbackUrl", nextUrl.pathname);
+                    return Response.redirect(loginUrl);
+                }
+            }
+
             if (
                 isLoggedIn &&
                 (pathWithoutLocale === "/login" ||

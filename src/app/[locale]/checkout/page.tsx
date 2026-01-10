@@ -3,15 +3,24 @@
 import PayPalCheckout from "@/components/checkout/PayPalCheckout";
 import ShippingForm from "@/components/checkout/ShippingForm";
 import { useCart } from "@/context/CartContext";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 export default function CheckoutPage() {
     const { items, totalPrice } = useCart();
+    const { data: session, status } = useSession();
     const [shippingDetails, setShippingDetails] = useState<any>(null);
     const [userProfile, setUserProfile] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const router = useRouter();
+
+    // Redirect to login if not authenticated
+    useEffect(() => {
+        if (status === "unauthenticated") {
+            router.push("/login?callbackUrl=/checkout");
+        }
+    }, [status, router]);
 
     useEffect(() => {
         async function fetchProfile() {
@@ -30,7 +39,21 @@ export default function CheckoutPage() {
         fetchProfile();
     }, []);
 
-    if (loading) return <div className="text-center py-20">Loading...</div>;
+    if (loading || status === "loading") {
+        return (
+            <div className="flex items-center justify-center min-h-screen bg-white dark:bg-gray-900">
+                <div className="text-center">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
+                    <p className="mt-4 text-gray-600 dark:text-gray-400">Loading...</p>
+                </div>
+            </div>
+        );
+    }
+
+    // Don't render checkout if not authenticated (will redirect)
+    if (status === "unauthenticated") {
+        return null;
+    }
 
     if (items.length === 0) {
         return (
