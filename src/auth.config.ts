@@ -19,7 +19,7 @@ export const authConfig = {
             // Check if accessing admin routes (with or without locale prefix)
             if (pathWithoutLocale.startsWith("/admin")) {
                 if (!isLoggedIn) {
-                    return Response.redirect(new URL("/login", nextUrl));
+                    return Response.redirect(new URL(`${process.env.NEXTAUTH_URL}/login`, nextUrl));
                 }
                 if ((auth.user as any).role !== "admin") {
                     return Response.redirect(new URL("/", nextUrl));
