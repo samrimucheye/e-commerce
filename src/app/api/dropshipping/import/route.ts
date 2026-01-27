@@ -18,10 +18,12 @@ export async function POST(req: Request) {
         await dbConnect();
 
         // 1. Fetch details from CJ
-        const cjData = await cj.getProductDetail(pid);
-        const cjProduct = cjData.data;
+        const cjProduct = await cj.getProductDetail(pid);
 
         if (!cjProduct) throw new Error('Product details not found in CJ');
+
+        // Log the product data to debug image URLs
+        console.log('CJ Product Image:', cjProduct.productImage);
 
         // 2. Map to internal Product model
         // Note: We use a default category if none provided, or look up/create one

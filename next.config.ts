@@ -31,6 +31,21 @@ const nextConfig: NextConfig = {
         hostname: 'cf.cjdropshipping.com',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'cjdropshipping.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'img.cjdropshipping.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: '*.cjdropshipping.com',
+        pathname: '/**',
+      },
     ],
   },
 };

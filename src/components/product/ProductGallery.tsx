@@ -9,7 +9,18 @@ interface ProductGalleryProps {
 }
 
 export default function ProductGallery({ images, name }: ProductGalleryProps) {
-    const [selectedImage, setSelectedImage] = useState(images[0] || "https://placehold.co/600x600");
+    // Filter out invalid URLs and ensure we have at least a placeholder
+    const validImages = images.filter(img => {
+        try {
+            return img && (img.startsWith('http://') || img.startsWith('https://') || img.startsWith('/'));
+        } catch {
+            return false;
+        }
+    });
+
+    const [selectedImage, setSelectedImage] = useState(
+        validImages[0] || "https://placehold.co/600x600"
+    );
 
     return (
         <div className="flex flex-col gap-6">
@@ -25,15 +36,15 @@ export default function ProductGallery({ images, name }: ProductGalleryProps) {
             </div>
 
             {/* Thumbnail Grid */}
-            {images.length > 1 && (
+            {validImages.length > 1 && (
                 <div className="grid grid-cols-5 gap-4">
-                    {images.map((img, index) => (
+                    {validImages.map((img, index) => (
                         <button
                             key={index}
                             onClick={() => setSelectedImage(img)}
                             className={`relative aspect-square overflow-hidden rounded-lg border-2 transition-all ${selectedImage === img
-                                    ? "border-indigo-600 ring-2 ring-indigo-600/20"
-                                    : "border-transparent hover:border-gray-300 dark:hover:border-gray-700"
+                                ? "border-indigo-600 ring-2 ring-indigo-600/20"
+                                : "border-transparent hover:border-gray-300 dark:hover:border-gray-700"
                                 }`}
                         >
                             <Image

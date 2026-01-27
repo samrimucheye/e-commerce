@@ -99,7 +99,7 @@ export default function DropshippingPage() {
                                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                             />
                             <div className="absolute top-4 right-4 bg-white/95 dark:bg-gray-900/95 backdrop-blur shadow-xl px-3 py-1.5 rounded-xl text-sm font-black text-gray-900 dark:text-white">
-                                ${product.sellPrice.toFixed(2)}
+                                ${Number(product.sellPrice || 0).toFixed(2)}
                             </div>
                         </div>
                         <div className="p-6 flex-1 flex flex-col">

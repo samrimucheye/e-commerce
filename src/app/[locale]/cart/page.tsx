@@ -1,12 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { useCart } from "@/context/CartContext";
 import { useSession } from "next-auth/react";
 import { useRouter } from "@/navigation";
 import { Trash2 } from "lucide-react";
-
+import Image from "next/image";
 export default function CartPage() {
     const { items, removeItem, updateQuantity, totalPrice } = useCart();
     const { data: session, status } = useSession();

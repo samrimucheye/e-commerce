@@ -34,6 +34,16 @@ export function ToastProvider({ children }: { children: ReactNode }) {
         setToasts((prev) => prev.filter((t) => t.id !== id));
     };
 
+    // Helper to check if image URL is valid
+    const isValidImageUrl = (url?: string): boolean => {
+        if (!url) return false;
+        try {
+            return url.startsWith('http://') || url.startsWith('https://') || url.startsWith('/');
+        } catch {
+            return false;
+        }
+    };
+
     return (
         <ToastContext.Provider value={{ showToast }}>
             {children}
@@ -50,10 +60,10 @@ export function ToastProvider({ children }: { children: ReactNode }) {
                         `}
                     >
                         {/* Icon or Image */}
-                        {toast.image ? (
+                        {isValidImageUrl(toast.image) ? (
                             <div className="relative h-12 w-12 flex-shrink-0 rounded-lg overflow-hidden border border-gray-100 dark:border-gray-700">
                                 <Image
-                                    src={toast.image}
+                                    src={toast.image!}
                                     alt="Product"
                                     fill
                                     className="object-cover"
@@ -61,8 +71,8 @@ export function ToastProvider({ children }: { children: ReactNode }) {
                             </div>
                         ) : (
                             <div className={`p-2 rounded-full ${toast.type === 'success' ? 'bg-green-100 text-green-600 dark:bg-green-900/30' :
-                                    toast.type === 'error' ? 'bg-rose-100 text-rose-600 dark:bg-rose-900/30' :
-                                        'bg-blue-100 text-blue-600 dark:bg-blue-900/30'
+                                toast.type === 'error' ? 'bg-rose-100 text-rose-600 dark:bg-rose-900/30' :
+                                    'bg-blue-100 text-blue-600 dark:bg-blue-900/30'
                                 }`}>
                                 {toast.type === 'success' && <CheckCircle className="w-5 h-5" />}
                                 {toast.type === 'error' && <AlertCircle className="w-5 h-5" />}
