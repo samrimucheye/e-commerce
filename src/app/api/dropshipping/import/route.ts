@@ -38,13 +38,31 @@ export async function POST(req: Request) {
             }
         }
 
+        // Helper to parse images
+        let images: string[] = [];
+        if (typeof cjProduct.productImage === 'string') {
+            try {
+                // Try parsing if it looks like a JSON array
+                if (cjProduct.productImage.trim().startsWith('[')) {
+                    images = JSON.parse(cjProduct.productImage);
+                } else {
+                    images = [cjProduct.productImage];
+                }
+            } catch (e) {
+                // If parse fails, assume it's a single URL
+                images = [cjProduct.productImage];
+            }
+        } else if (Array.isArray(cjProduct.productImage)) {
+            images = cjProduct.productImage;
+        }
+
         const newProduct = {
             name: cjProduct.productNameEn,
             slug: cjProduct.productNameEn.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, ''),
             description: cjProduct.description || cjProduct.productNameEn,
             price: cjProduct.sellPrice || 0,
             stock: 100, // CJ products usually imply virtual stock or we can fetch real stock
-            images: [cjProduct.productImage],
+            images: images,
             category: targetCategory,
             externalId: pid,
             source: 'cjdropshipping'

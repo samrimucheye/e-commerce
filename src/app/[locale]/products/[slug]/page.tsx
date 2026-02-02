@@ -63,9 +63,10 @@ export default async function ProductDetailPage({
                 <div className="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">
                     <div className="lg:col-span-3 border-t border-gray-200 dark:border-gray-800 pt-10">
                         <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">Description</h3>
-                        <div className="prose prose-sm dark:prose-invert max-w-none text-gray-600 dark:text-gray-300">
-                            <p>{product.description}</p>
-                        </div>
+                        <div
+                            className="prose prose-sm dark:prose-invert max-w-none text-gray-600 dark:text-gray-300"
+                            dangerouslySetInnerHTML={{ __html: product.description }}
+                        />
                     </div>
                 </div>
             </div>
