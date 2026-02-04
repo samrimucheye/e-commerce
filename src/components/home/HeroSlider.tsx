@@ -6,37 +6,72 @@ import { ChevronLeft, ChevronRight, Sparkles } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslations } from "next-intl";
 
+const colorStyles = {
+    indigo: {
+        accent: "bg-indigo-500",
+        text: "text-indigo-400",
+        button: "bg-indigo-600 hover:bg-indigo-700 shadow-indigo-600/30",
+        progress: "bg-indigo-500"
+    },
+    rose: {
+        accent: "bg-rose-500",
+        text: "text-rose-400",
+        button: "bg-rose-600 hover:bg-rose-700 shadow-rose-600/30",
+        progress: "bg-rose-500"
+    },
+    emerald: {
+        accent: "bg-emerald-500",
+        text: "text-emerald-400",
+        button: "bg-emerald-600 hover:bg-emerald-700 shadow-emerald-600/30",
+        progress: "bg-emerald-500"
+    },
+    amber: {
+        accent: "bg-amber-500",
+        text: "text-amber-400",
+        button: "bg-amber-600 hover:bg-amber-700 shadow-amber-600/30",
+        progress: "bg-amber-500"
+    }
+};
 
 export default function HeroSlider() {
     const t = useTranslations("HomePage");
 
     const slides = [
         {
-            image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=1600&h=800&auto=format&fit=crop",
+            video: "/sport.mp4",
             title: t("heroTitle1"),
             subtitle: t("heroSubtitle1"),
             description: t("heroDesc1"),
             cta: t("heroCta1"),
-            link: "/products",
+            link: "/products?category=sports",
             color: "indigo"
         },
         {
-            image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=1600&h=800&auto=format&fit=crop",
+            video: "/electronics.mp4",
             title: t("heroTitle2"),
             subtitle: t("heroSubtitle2"),
             description: t("heroDesc2"),
             cta: t("heroCta2"),
-            link: "/products",
+            link: "/products?category=electronics",
             color: "rose"
         },
         {
-            image: "https://images.unsplash.com/photo-1449247701024-2c11438f2f63?q=80&w=1600&h=800&auto=format&fit=crop",
+            video: "/home.mp4",
             title: t("heroTitle3"),
             subtitle: t("heroSubtitle3"),
             description: t("heroDesc3"),
             cta: t("heroCta3"),
-            link: "/products",
+            link: "/products?category=home",
             color: "emerald"
+        },
+        {
+            video: "/pets.mp4",
+            title: t("heroTitle4"),
+            subtitle: t("heroSubtitle4"),
+            description: t("heroDesc4"),
+            cta: t("heroCta4"),
+            link: "/products?category=pets",
+            color: "amber"
         }
     ];
 
@@ -46,10 +81,10 @@ export default function HeroSlider() {
     const paginate = useCallback((newDirection: number) => {
         setDirection(newDirection);
         setCurrent((prev) => (prev + newDirection + slides.length) % slides.length);
-    }, []);
+    }, [slides.length]);
 
     useEffect(() => {
-        const timer = setInterval(() => paginate(1), 6000);
+        const timer = setInterval(() => paginate(1), 8000); // Increased duration for video usage
         return () => clearInterval(timer);
     }, [paginate]);
 
@@ -70,6 +105,8 @@ export default function HeroSlider() {
         })
     };
 
+    const currentStyle = colorStyles[slides[current].color as keyof typeof colorStyles];
+
     return (
         <div className="relative h-[600px] md:h-[750px] w-full overflow-hidden bg-slate-950">
             <AnimatePresence initial={false} custom={direction}>
@@ -89,15 +126,18 @@ export default function HeroSlider() {
                     <motion.div
                         initial={{ scale: 1.2 }}
                         animate={{ scale: 1 }}
-                        transition={{ duration: 6 }}
+                        transition={{ duration: 8 }} // Slower scale for video elegance
                         className="relative w-full h-full"
                     >
-                        <img
-                            src={slides[current].image}
-                            alt={slides[current].title}
+                        <video
+                            src={slides[current].video}
+                            autoPlay
+                            muted
+                            loop
+                            playsInline
                             className="w-full h-full object-cover"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/80 via-slate-950/40 to-transparent" />
+                        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-950/50 to-transparent" />
                     </motion.div>
 
                     {/* Content Section */}
@@ -109,8 +149,8 @@ export default function HeroSlider() {
                                 transition={{ delay: 0.3 }}
                                 className="flex items-center gap-3"
                             >
-                                <span className="h-[2px] w-8 md:w-12 bg-indigo-500" />
-                                <span className="text-indigo-400 font-black text-[10px] md:text-xs uppercase tracking-[0.3em]">{slides[current].subtitle}</span>
+                                <span className={`h-[2px] w-8 md:w-12 ${currentStyle.accent}`} />
+                                <span className={`${currentStyle.text} font-black text-[10px] md:text-xs uppercase tracking-[0.3em]`}>{slides[current].subtitle}</span>
                             </motion.div>
 
                             <motion.h1
@@ -143,7 +183,7 @@ export default function HeroSlider() {
                             >
                                 <Link
                                     href={slides[current].link}
-                                    className="group relative inline-flex items-center justify-center px-8 md:px-10 py-4 md:py-5 text-sm md:text-base font-black text-white transition-all duration-300 bg-indigo-600 rounded-2xl md:rounded-[2rem] hover:bg-indigo-700 shadow-2xl shadow-indigo-600/30 overflow-hidden"
+                                    className={`group relative inline-flex items-center justify-center px-8 md:px-10 py-4 md:py-5 text-sm md:text-base font-black text-white transition-all duration-300 ${currentStyle.button} rounded-2xl md:rounded-[2rem] overflow-hidden`}
                                 >
                                     <span className="relative z-10 flex items-center">
                                         {slides[current].cta}
@@ -204,10 +244,10 @@ export default function HeroSlider() {
                             {index === current && (
                                 <motion.div
                                     layoutId="activeSlide"
-                                    className="absolute inset-0 bg-indigo-500"
+                                    className={`absolute inset-0 ${colorStyles[slides[current].color as keyof typeof colorStyles].progress}`}
                                     initial={{ width: 0 }}
                                     animate={{ width: "100%" }}
-                                    transition={{ duration: 6, ease: "linear" }}
+                                    transition={{ duration: 8, ease: "linear" }}
                                 />
                             )}
                         </button>
