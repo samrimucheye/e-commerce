@@ -58,7 +58,10 @@ export class CJClient {
         const query = new URLSearchParams({
             pageNum: String(params.pageNum ?? 1),
             pageSize: String(params.pageSize ?? 20),
-            ...(params.keyword && { productName: params.keyword }),
+            ...(params.keyword && (params.keyword.toUpperCase().startsWith('CJ')
+                ? { productSku: params.keyword }
+                : { productName: params.keyword }
+            )),
             ...(params.categoryId && { categoryId: params.categoryId }),
         });
 

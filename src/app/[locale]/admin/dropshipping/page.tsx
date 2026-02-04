@@ -58,6 +58,9 @@ export default function DropshippingPage() {
                 <div>
                     <h1 className="text-3xl font-black text-gray-900 dark:text-white tracking-tight">CJ Sourcing</h1>
                     <p className="mt-1 text-gray-500 font-medium">Find and import winning products directly from CJ Dropshipping.</p>
+                    <p className="mt-2 text-sm text-indigo-500 font-bold bg-indigo-50 dark:bg-indigo-900/20 px-3 py-1 rounded-lg inline-block">
+                        ✨ Tip: You can now search directly by SKU (e.g. CJYD247547416PK)
+                    </p>
                 </div>
             </div>
 
@@ -69,7 +72,7 @@ export default function DropshippingPage() {
                             type="text"
                             value={keyword}
                             onChange={(e) => setKeyword(e.target.value)}
-                            placeholder="Search products on CJ Dropshipping..."
+                            placeholder="Search by Product Name or SKU (e.g. CJYD...)..."
                             className="w-full pl-12 pr-4 py-4 rounded-2xl bg-gray-50 dark:bg-gray-900 border-none focus:ring-2 focus:ring-indigo-500 font-bold transition-all"
                         />
                     </div>
@@ -122,7 +125,7 @@ export default function DropshippingPage() {
                                     Import
                                 </button>
                                 <a
-                                    href={`https://cjdropshipping.com/product-detail.html?productID=${product.pid}`}
+                                    href={`https://cjdropshipping.com/product/${product.productNameEn?.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') || 'item'}-${product.pid}.html`}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="p-3 text-gray-400 hover:text-indigo-600 bg-slate-50 dark:bg-gray-900 rounded-2xl transition-all hover:scale-110"

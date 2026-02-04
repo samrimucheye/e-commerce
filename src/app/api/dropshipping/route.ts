@@ -51,6 +51,17 @@ export async function GET(req: Request) {
             pageSize: Number.isNaN(pageSize) ? 20 : pageSize,
         });
 
+        if (data && data.list && data.list.length > 0) {
+            console.log("CJ Search Debug:", {
+                keyword,
+                firstMatch: {
+                    pid: data.list[0].pid,
+                    sku: data.list[0].productSku,
+                    name: data.list[0].productNameEn
+                }
+            });
+        }
+
         return NextResponse.json({
             success: true,
             data,
