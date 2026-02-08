@@ -38,7 +38,7 @@ export default function HeroSlider() {
 
     const slides = [
         {
-            video: "/sport.mp4",
+            video: "/sport.webm",
             title: t("heroTitle1"),
             subtitle: t("heroSubtitle1"),
             description: t("heroDesc1"),
@@ -47,7 +47,7 @@ export default function HeroSlider() {
             color: "indigo"
         },
         {
-            video: "/electronics.mp4",
+            video: "/electronics.webm",
             title: t("heroTitle2"),
             subtitle: t("heroSubtitle2"),
             description: t("heroDesc2"),
@@ -56,7 +56,7 @@ export default function HeroSlider() {
             color: "rose"
         },
         {
-            video: "/home.mp4",
+            video: "/home.webm",
             title: t("heroTitle3"),
             subtitle: t("heroSubtitle3"),
             description: t("heroDesc3"),
@@ -65,7 +65,7 @@ export default function HeroSlider() {
             color: "emerald"
         },
         {
-            video: "/pets.mp4",
+            video: "/pets.webm",
             title: t("heroTitle4"),
             subtitle: t("heroSubtitle4"),
             description: t("heroDesc4"),
@@ -77,6 +77,7 @@ export default function HeroSlider() {
 
     const [current, setCurrent] = useState(0);
     const [direction, setDirection] = useState(0);
+    const [isAutoPlaying, setIsAutoPlaying] = useState(true);
 
     const paginate = useCallback((newDirection: number) => {
         setDirection(newDirection);
@@ -84,31 +85,44 @@ export default function HeroSlider() {
     }, [slides.length]);
 
     useEffect(() => {
-        const timer = setInterval(() => paginate(1), 8000); // Increased duration for video usage
+        if (!isAutoPlaying) return;
+        const timer = setInterval(() => paginate(1), 8000);
         return () => clearInterval(timer);
-    }, [paginate]);
+    }, [paginate, isAutoPlaying]);
 
     const variants = {
         enter: (direction: number) => ({
-            x: direction > 0 ? 1000 : -1000,
-            opacity: 0
+            x: direction > 0 ? "100%" : "-100%",
+            opacity: 0,
+            scale: 1.1 // Slight zoom on enter
         }),
         center: {
             zIndex: 1,
             x: 0,
-            opacity: 1
+            opacity: 1,
+            scale: 1
         },
         exit: (direction: number) => ({
             zIndex: 0,
-            x: direction < 0 ? 1000 : -1000,
-            opacity: 0
+            x: direction < 0 ? "100%" : "-100%",
+            opacity: 0,
+            scale: 0.9 // Slight zoom out on exit
         })
+    };
+
+    const swipeConfidenceThreshold = 10000;
+    const swipePower = (offset: number, velocity: number) => {
+        return Math.abs(offset) * velocity;
     };
 
     const currentStyle = colorStyles[slides[current].color as keyof typeof colorStyles];
 
     return (
-        <div className="relative h-[600px] md:h-[750px] w-full overflow-hidden bg-slate-950">
+        <div
+            className="relative h-[100svh] min-h-[600px] w-full overflow-hidden bg-slate-950"
+            onMouseEnter={() => setIsAutoPlaying(false)}
+            onMouseLeave={() => setIsAutoPlaying(true)}
+        >
             <AnimatePresence initial={false} custom={direction}>
                 <motion.div
                     key={current}
@@ -119,16 +133,24 @@ export default function HeroSlider() {
                     exit="exit"
                     transition={{
                         x: { type: "spring", stiffness: 300, damping: 30 },
-                        opacity: { duration: 0.2 }
+                        opacity: { duration: 0.4 },
+                        scale: { duration: 0.4 }
                     }}
-                    className="absolute inset-0"
+                    drag="x"
+                    dragConstraints={{ left: 0, right: 0 }}
+                    dragElastic={1}
+                    onDragEnd={(e, { offset, velocity }) => {
+                        const swipe = swipePower(offset.x, velocity.x);
+
+                        if (swipe < -swipeConfidenceThreshold) {
+                            paginate(1);
+                        } else if (swipe > swipeConfidenceThreshold) {
+                            paginate(-1);
+                        }
+                    }}
+                    className="absolute inset-0 cursor-grab active:cursor-grabbing"
                 >
-                    <motion.div
-                        initial={{ scale: 1.2 }}
-                        animate={{ scale: 1 }}
-                        transition={{ duration: 8 }} // Slower scale for video elegance
-                        className="relative w-full h-full"
-                    >
+                    <div className="relative w-full h-full">
                         <video
                             src={slides[current].video}
                             autoPlay
@@ -137,30 +159,31 @@ export default function HeroSlider() {
                             playsInline
                             className="w-full h-full object-cover"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-950/50 to-transparent" />
-                    </motion.div>
+                        {/* Enhanced Gradient Overlay for better text readability */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-slate-950/10 sm:bg-gradient-to-r sm:from-slate-950/90 sm:via-slate-950/50 sm:to-transparent" />
+                    </div>
 
                     {/* Content Section */}
-                    <div className="absolute inset-0 flex items-center px-6 sm:px-12 lg:px-24">
-                        <div className="max-w-3xl space-y-4 md:space-y-6">
+                    <div className="absolute inset-0 flex items-center justify-center sm:justify-start px-6 sm:px-12 lg:px-24">
+                        <div className="max-w-4xl space-y-4 md:space-y-6 w-full pt-16 sm:pt-0 text-center sm:text-left">
                             <motion.div
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: 0.3 }}
-                                className="flex items-center gap-3"
+                                className="flex items-center justify-center sm:justify-start gap-3"
                             >
                                 <span className={`h-[2px] w-8 md:w-12 ${currentStyle.accent}`} />
-                                <span className={`${currentStyle.text} font-black text-[10px] md:text-xs uppercase tracking-[0.3em]`}>{slides[current].subtitle}</span>
+                                <span className={`${currentStyle.text} font-black text-xs md:text-sm uppercase tracking-[0.3em] shadow-sm`}>{slides[current].subtitle}</span>
                             </motion.div>
 
                             <motion.h1
                                 initial={{ opacity: 0, y: 30 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: 0.4 }}
-                                className="text-5xl sm:text-7xl md:text-8xl font-black text-white tracking-tighter leading-[0.9] sm:leading-none"
+                                className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-white tracking-tighter leading-[1] sm:leading-none drop-shadow-2xl"
                             >
                                 {slides[current].title.split(' ').map((word, i) => (
-                                    <span key={i} className="inline-block mr-3 md:mr-4">
+                                    <span key={i} className="inline-block mr-2 sm:mr-3 md:mr-4">
                                         {word}
                                     </span>
                                 ))}
@@ -170,7 +193,7 @@ export default function HeroSlider() {
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: 0.5 }}
-                                className="text-lg md:text-xl text-slate-300 max-w-xl font-medium leading-relaxed"
+                                className="text-base sm:text-lg md:text-xl text-slate-200 max-w-xl font-medium leading-relaxed mx-auto sm:mx-0 drop-shadow-md"
                             >
                                 {slides[current].description}
                             </motion.p>
@@ -179,15 +202,15 @@ export default function HeroSlider() {
                                 initial={{ opacity: 0, scale: 0.9 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 transition={{ delay: 0.6 }}
-                                className="pt-2 md:pt-4 flex items-center gap-4 md:gap-6"
+                                className="pt-4 md:pt-6 flex flex-col sm:flex-row items-center gap-4 sm:gap-6 justify-center sm:justify-start"
                             >
                                 <Link
                                     href={slides[current].link}
-                                    className={`group relative inline-flex items-center justify-center px-8 md:px-10 py-4 md:py-5 text-sm md:text-base font-black text-white transition-all duration-300 ${currentStyle.button} rounded-2xl md:rounded-[2rem] overflow-hidden`}
+                                    className={`group relative inline-flex items-center justify-center px-8 sm:px-10 py-4 sm:py-5 text-base font-black text-white transition-all duration-300 ${currentStyle.button} rounded-full overflow-hidden w-full sm:w-auto hover:scale-105 active:scale-95`}
                                 >
                                     <span className="relative z-10 flex items-center">
                                         {slides[current].cta}
-                                        <ChevronRight className="w-4 h-4 md:w-5 md:h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                                        <ChevronRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
                                     </span>
                                     <motion.div
                                         className="absolute inset-0 bg-white/20"
@@ -197,8 +220,8 @@ export default function HeroSlider() {
                                     />
                                 </Link>
 
-                                <button className="p-4 md:p-5 border-2 border-slate-700/50 rounded-2xl md:rounded-[2rem] text-white hover:bg-white hover:text-slate-950 transition-all">
-                                    <Sparkles className="w-5 h-5 md:w-6 md:h-6" />
+                                <button className="p-4 sm:p-5 border-2 border-white/20 hover:border-white/40 bg-white/5 backdrop-blur-sm rounded-full text-white hover:bg-white hover:text-slate-950 transition-all duration-300 w-full sm:w-auto flex justify-center items-center hover:scale-105 active:scale-95">
+                                    <Sparkles className="w-6 h-6" />
                                 </button>
                             </motion.div>
                         </div>
@@ -207,7 +230,7 @@ export default function HeroSlider() {
             </AnimatePresence>
 
             {/* 3D-feeling decorative orbs */}
-            <div className="absolute inset-0 pointer-events-none overflow-hidden">
+            <div className="absolute inset-0 pointer-events-none overflow-hidden hidden sm:block">
                 <motion.div
                     animate={{
                         y: [0, -40, 0],
@@ -228,9 +251,9 @@ export default function HeroSlider() {
                 />
             </div>
 
-            {/* Pagination Controls */}
-            <div className="absolute bottom-12 left-4 sm:left-12 lg:left-24 z-20 flex items-center gap-6">
-                <div className="flex gap-3">
+            {/* Pagination Controls - Repositioned for mobile */}
+            <div className="absolute bottom-8 sm:bottom-12 left-0 right-0 sm:left-12 sm:right-auto px-6 sm:px-0 z-20 flex flex-row items-center justify-between sm:justify-start gap-4 sm:gap-6">
+                <div className="flex gap-2 sm:gap-3">
                     {slides.map((_, index) => (
                         <button
                             key={index}
@@ -238,8 +261,8 @@ export default function HeroSlider() {
                                 setDirection(index > current ? 1 : -1);
                                 setCurrent(index);
                             }}
-                            className="relative h-1 bg-slate-800 rounded-full overflow-hidden transition-all duration-500"
-                            style={{ width: index === current ? "60px" : "30px" }}
+                            className="relative h-1.5 sm:h-2 bg-white/20 rounded-full overflow-hidden transition-all duration-500 hover:bg-white/40"
+                            style={{ width: index === current ? "40px" : "12px" }}
                         >
                             {index === current && (
                                 <motion.div
@@ -257,15 +280,15 @@ export default function HeroSlider() {
                 <div className="flex gap-2">
                     <button
                         onClick={() => paginate(-1)}
-                        className="p-3 rounded-full border border-slate-700 text-white hover:bg-white hover:text-slate-950 transition-all active:scale-95"
+                        className="p-2 sm:p-3 rounded-full border border-white/20 bg-black/20 backdrop-blur-md text-white hover:bg-white hover:text-slate-950 transition-all active:scale-95"
                     >
-                        <ChevronLeft className="h-5 w-5" />
+                        <ChevronLeft className="h-4 w-4 sm:h-5 sm:w-5" />
                     </button>
                     <button
                         onClick={() => paginate(1)}
-                        className="p-3 rounded-full border border-slate-700 text-white hover:bg-white hover:text-slate-950 transition-all active:scale-95"
+                        className="p-2 sm:p-3 rounded-full border border-white/20 bg-black/20 backdrop-blur-md text-white hover:bg-white hover:text-slate-950 transition-all active:scale-95"
                     >
-                        <ChevronRight className="h-5 w-5" />
+                        <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5" />
                     </button>
                 </div>
             </div>
