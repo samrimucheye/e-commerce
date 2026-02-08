@@ -48,11 +48,12 @@ export default function CartPage() {
                                 <li key={`${item.productId}-${item.variant}`} className="flex py-6">
                                     <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200 dark:border-gray-800">
                                         <Image
-                                            src={item.image}
+                                            src={(item.image && (item.image.startsWith('http') || item.image.startsWith('/'))) ? item.image : "https://placehold.co/100x100"}
                                             alt={item.name}
                                             width={100}
                                             height={100}
                                             className="h-full w-full object-cover object-center"
+                                            unoptimized={item.image?.startsWith('http')}
                                         />
                                     </div>
 
