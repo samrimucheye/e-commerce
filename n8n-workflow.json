@@ -1,0 +1,106 @@
+{
+    "name": "CJ Dropshipping Auto Order",
+    "nodes": [
+        {
+            "parameters": {
+                "path": "new-order",
+                "httpMethod": "POST",
+                "responseMode": "onReceived"
+            },
+            "id": "Webhook",
+            "name": "Webhook",
+            "type": "n8n-nodes-base.webhook",
+            "typeVersion": 1,
+            "position": [
+                200,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "url": "https://developers.cjdropshipping.com/api2.0/v1/authentication/getAccessToken",
+                "method": "POST",
+                "jsonParameters": true,
+                "options": {},
+                "bodyParametersJson": "{\"apiKey\":\"YOUR_CJ_API_KEY\"}"
+            },
+            "id": "GetToken",
+            "name": "Get CJ Token",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 2,
+            "position": [
+                450,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "functionCode": "const data = items[0].json;\nreturn [{json:{\n  orderNumber: data.order_id,\n  shippingCountryCode: data.customer.country,\n  shippingCustomerName: data.customer.name,\n  shippingAddress: data.customer.address,\n  shippingCity: data.customer.city,\n  shippingZip: data.customer.zip,\n  shippingPhone: data.customer.phone,\n  shippingEmail: data.customer.email,\n  products:[{ vid: data.cj_variant_id, quantity: data.quantity }]\n}}];"
+            },
+            "id": "FormatOrder",
+            "name": "Format CJ Order",
+            "type": "n8n-nodes-base.function",
+            "typeVersion": 1,
+            "position": [
+                700,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "url": "https://developers.cjdropshipping.com/api2.0/v1/shopping/order/createOrder",
+                "method": "POST",
+                "jsonParameters": true,
+                "options": {},
+                "headerParametersJson": "{\"CJ-Access-Token\":\"={{$node['Get CJ Token'].json['data']['accessToken']}}\"}",
+                "bodyParametersJson": "={{JSON.stringify($json)}}"
+            },
+            "id": "CreateOrder",
+            "name": "Create CJ Order",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 2,
+            "position": [
+                950,
+                300
+            ]
+        }
+    ],
+    "connections": {
+        "Webhook": {
+            "main": [
+                [
+                    {
+                        "node": "Get CJ Token",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Get CJ Token": {
+            "main": [
+                [
+                    {
+                        "node": "Format CJ Order",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Format CJ Order": {
+            "main": [
+                [
+                    {
+                        "node": "Create CJ Order",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    },
+    "active": false,
+    "settings": {},
+    "versionId": "1"
+}

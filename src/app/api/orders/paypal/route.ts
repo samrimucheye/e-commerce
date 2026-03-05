@@ -183,53 +183,69 @@ export async function PUT(req: Request) {
         if (data.status === 'COMPLETED') {
             await dbConnect();
 
-            // In a real app, we should pass items again or store them temporarily to verify match
-            // For this demo, we assume the captured order is valid and we'd construct the Order object
-            // based on what was in the user's cart or what we stored in a temp 'pending' order during creation.
-            // Since we didn't store a pending order in POST, we can't easily reconstruct items here without trusting client
-            // OR we can query PayPal for the transaction details.
+            // Find the pending order created in the POST block
+            // The custom_id was set to the Mongo Order _id
+            const capture = data.purchase_units[0].payments.captures[0];
+            const originalOrderId = capture.custom_id;
 
-            // Simplification: We will just create a "Paid" order record logged.
-            // Ideally: Pass cart items in body again to reconstruct record, or rely on PayPal metadata.
+            if (!originalOrderId) {
+                return NextResponse.json({ message: "No custom_id found in PayPal capture to link with DB order." }, { status: 400 });
+            }
 
-            const userId = (session?.user as any)?.id || 'guest';
+            const existingOrder = await Order.findById(originalOrderId);
+            if (!existingOrder) {
+                return NextResponse.json({ message: "Original order not found in DB." }, { status: 404 });
+            }
 
-            // Create Order Record in DB
-            // Note: items array is missing here because we didn't pass it in PUT body.
-            // To fix this, the client should send items in PUT or we should have stored a pending order in POST.
-            // Let's assume we create a generic 'PayPal Order' if items missing, or update the implementation to receive items.
+            // Update the existing order to Paid
+            existingOrder.status = 'paid';
+            existingOrder.isPaid = true;
+            existingOrder.paidAt = new Date();
+            existingOrder.paymentResult = {
+                id: data.id,
+                status: data.status,
+                email_address: data.payer.email_address
+            };
 
-            // NOTE: Updated flow -> Client should send items in PUT as well for recording purposes, 
-            // but we already captured payment so money is safe.
+            await existingOrder.save();
 
-            /* 
-               Real World:
-               1. POST -> Create Order in DB status 'Pending', return DB_ID + PayPal_Order_ID
-               2. PUT -> Update Order in DB status 'Paid' using DB_ID.
-               
-               Let's stick to the current plan but maybe just log it for now to avoid complexity errors.
-            */
+            // Trigger n8n Webhook for CJ Items
+            const webhookUrl = process.env.N8N_WEBHOOK_URL || 'http://localhost:5678/webhook/new-order';
 
-            await Order.create({
-                user: userId !== 'guest' ? userId : new Object('000000000000000000000000'),
-                items: [], // Would need to be populated
-                totalAmount: parseFloat(data.purchase_units[0].payments.captures[0].amount.value),
-                status: 'paid',
-                isPaid: true,
-                paidAt: new Date(),
-                shippingAddress: {
-                    fullName: data.payer.name.given_name + ' ' + data.payer.name.surname,
-                    address: 'PayPal Address', // PayPal returns shipping info, can be parsed
-                    city: 'PayPal City',
-                    postalCode: '00000',
-                    country: data.payer.address.country_code
-                },
-                paymentResult: {
-                    id: data.id,
-                    status: data.status,
-                    email_address: data.payer.email_address
+            for (const item of existingOrder.items) {
+                // Assume the variant string holds the CJ Variant ID if it exists.
+                // In a full implementation, you'd check the Product model to see if it's a CJ product.
+                if (item.variant) {
+                    const payload = {
+                        order_id: existingOrder._id.toString(),
+                        cj_variant_id: item.variant,
+                        quantity: item.quantity,
+                        customer: {
+                            name: existingOrder.shippingAddress.fullName,
+                            email: data.payer.email_address || session?.user?.email, // PayPal buyer email
+                            phone: "0000000000", // Fallback, could prompt user for this at checkout
+                            address: existingOrder.shippingAddress.address,
+                            city: existingOrder.shippingAddress.city,
+                            country: existingOrder.shippingAddress.country,
+                            zip: existingOrder.shippingAddress.postalCode
+                        }
+                    };
+
+                    try {
+                        const whResponse = await fetch(webhookUrl, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload)
+                        });
+
+                        if (!whResponse.ok) {
+                            console.error(`Failed to trigger n8n webhook for order ${existingOrder._id}`, await whResponse.text());
+                        }
+                    } catch (whError) {
+                        console.error("n8n Webhook Error:", whError);
+                    }
                 }
-            });
+            }
         }
 
         return NextResponse.json(data);

@@ -1,9 +1,26 @@
 const CJ_API_BASE = 'https://developers.cjdropshipping.com/api2.0/v1';
 
+const globalForCJ = globalThis as unknown as {
+    cjTokenCache: {
+        accessToken: string | null;
+        tokenExpiry: number | null;
+        fetchPromise: Promise<string> | null;
+    } | undefined;
+    cj: any;
+};
+
+const tokenCache = globalForCJ.cjTokenCache ?? {
+    accessToken: null,
+    tokenExpiry: null,
+    fetchPromise: null,
+};
+
+if (process.env.NODE_ENV !== 'production') {
+    globalForCJ.cjTokenCache = tokenCache;
+}
+
 export class CJClient {
     private apiKey: string;
-    private accessToken: string | null = null;
-    private tokenExpiry: number | null = null;
 
     constructor() {
         if (!process.env.CJ_API_KEY) {
@@ -13,38 +30,53 @@ export class CJClient {
     }
 
     private async getAccessToken(): Promise<string> {
-        // Check if we have a valid token in memory
         const now = Date.now();
-        if (this.accessToken && this.tokenExpiry && now < this.tokenExpiry) {
-            return this.accessToken;
+
+        // 1. Check valid cache
+        if (tokenCache.accessToken && tokenCache.tokenExpiry && now < tokenCache.tokenExpiry) {
+            return tokenCache.accessToken;
         }
 
-        const res = await fetch(
-            `${CJ_API_BASE}/authentication/getAccessToken`,
-            {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    apiKey: this.apiKey,
-                }),
+        // 2. Check if a fetch is currently in progress
+        if (tokenCache.fetchPromise) {
+            return tokenCache.fetchPromise;
+        }
+
+        // 3. Start a new fetch
+        tokenCache.fetchPromise = (async () => {
+            try {
+                const res = await fetch(
+                    `${CJ_API_BASE}/authentication/getAccessToken`,
+                    {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            apiKey: this.apiKey,
+                        }),
+                    }
+                );
+
+                const data = await res.json();
+
+                // strict validation (matches Postman)
+                if (!res.ok || data.code !== 200 || !data.data?.accessToken) {
+                    throw new Error(
+                        `CJ auth failed: ${JSON.stringify(data)}`
+                    );
+                }
+
+                tokenCache.accessToken = data.data.accessToken;
+                // Token valid for 4 hours (14400000ms), cache for 3.5 hours to be safe
+                tokenCache.tokenExpiry = Date.now() + 12600000;
+                return tokenCache.accessToken as string;
+            } finally {
+                tokenCache.fetchPromise = null;
             }
-        );
+        })();
 
-        const data = await res.json();
-
-        // strict validation (matches Postman)
-        if (!res.ok || data.code !== 200 || !data.data?.accessToken) {
-            throw new Error(
-                `CJ auth failed: ${JSON.stringify(data)}`
-            );
-        }
-
-        this.accessToken = data.data.accessToken;
-        // Token valid for 4 hours (14400000ms), cache for 3.5 hours to be safe
-        this.tokenExpiry = now + 12600000;
-        return this.accessToken!;
+        return tokenCache.fetchPromise as Promise<string>;
     }
 
     async searchProducts(params: {
@@ -111,4 +143,8 @@ export class CJClient {
     }
 }
 
-export const cj = new CJClient();
+export const cj = globalForCJ.cj ?? new CJClient();
+
+if (process.env.NODE_ENV !== 'production') {
+    globalForCJ.cj = cj as any;
+}
